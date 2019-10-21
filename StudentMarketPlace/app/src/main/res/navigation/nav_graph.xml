@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/posts">
+
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.cmpe277.studentmarketplace.Profile"
+        android:label="Account"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/bookmarks"
+        android:name="com.cmpe277.studentmarketplace.Bookmarks"
+        android:label="Saved Posts"
+        tools:layout="@layout/fragment_bookmarks" />
+    <fragment
+        android:id="@+id/posts"
+        android:name="com.cmpe277.studentmarketplace.Posts"
+        android:label="Posts"
+        tools:layout="@layout/fragment_posts" />
+</navigation>

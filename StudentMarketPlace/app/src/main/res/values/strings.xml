@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Student Market Place</string>
+    <string name="login_text">Welcome to Student Market Place</string>
+    <string name="login">Login</string>
+    <string name="enter_email">Please enter your email</string>
+    <string name="enter_pwd">Please enter the password</string>
+</resources>
