@@ -1,6 +1,7 @@
 package com.cmpe277.studentmarketplace;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,13 +19,15 @@ import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     String currentUserEmail="";
+    SharedPreferences sp;// getApplicationContext().getSharedPreferences(getString(R.string.app_pref),MODE_PRIVATE);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Intent loginIntent = getIntent();
-        Bundle dataBundle = loginIntent.getExtras();
-        currentUserEmail = dataBundle.getString("email");
+        //Bundle dataBundle = loginIntent.getExtras();
+        sp = getApplicationContext().getSharedPreferences(getString(R.string.app_pref),MODE_PRIVATE);
+        currentUserEmail = sp.getString("email","");//dataBundle.getString("email");
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         AppBarConfiguration appBarConfiguration =
@@ -68,6 +71,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 onNavigationItemSelected(navView.getMenu().getItem(0));
                 break;
             case R.id.logout:currentUserEmail = "";
+                sp.edit().putBoolean("logged",false).apply();
+                sp.edit().putString("email","");
                 Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(loginIntent);
                 break;

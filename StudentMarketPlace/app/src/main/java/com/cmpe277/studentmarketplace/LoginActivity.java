@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView signup_link;
     Database db;
     private static final int REQUEST_SIGNUP = 0;
+    SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,12 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-
+        sp = getApplicationContext().getSharedPreferences(getString(R.string.app_pref),MODE_PRIVATE);
+        if(sp.getBoolean("logged",false)){
+            Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
+            //homeIntent.putExtras();
+            startActivity(homeIntent);
+        }
         signup_link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,12 +107,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
+        sp.edit().putString("email",email_input.getText().toString()).apply();
+        sp.edit().putBoolean("logged",true).apply();
         login_btn.setEnabled(true);
         //Toast.makeText(getBaseContext(), "Login success", Toast.LENGTH_LONG).show();
-        Bundle dataBundle = new Bundle();
-        dataBundle.putString("email", email_input.getText().toString());
+        //Bundle dataBundle = new Bundle();
+        //dataBundle.putString("email", email_input.getText().toString());
         Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
-        homeIntent.putExtras(dataBundle);
+        //homeIntent.putExtras(dataBundle);
         startActivity(homeIntent);
         //finish();
     }
