@@ -2,12 +2,12 @@ package com.cmpe277.studentmarketplace;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -16,15 +16,21 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     String currentUserEmail="";
     SharedPreferences sp;
+    RecyclerView homePostsRecyclerView,postedPostRecyclerView,purchasedPostRecylerView;
+    ArrayList<Post> allPostList,postedPostList,purchasedPostList;
+    Database db;
+    HomeActivity currentActivity;
+    Post currentPost; // accesed by ViewPost fragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +47,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navView = findViewById(R.id.nav_view);
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        db = new Database(this);
+        //First load will have all the posts
+        allPostList = db.GetAllPosts();
+        postedPostList = db.GetPostedPosts();
+        purchasedPostList = db.GetPurchasedPosts();
+        currentActivity = this;
     }
 
     @Override
@@ -98,4 +110,87 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return currentUserEmail;
     }
 
+    public void setHomePostsRecyclerview(RecyclerView rv){
+        homePostsRecyclerView = rv;
+    }
+
+    public void  displayHomePosts(){
+        if(homePostsRecyclerView == null) return;
+        RecyclerView.Adapter mAdapter;
+        // specify an adapter
+        if(allPostList == null || allPostList.size() == 0){
+            View contextView = this.findViewById(R.id.nav_host_fragment);
+            Snackbar.make(contextView, "No HomePosts to Display", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = homePostsRecyclerView.indexOfChild(v);
+                currentPost = allPostList.get(pos);
+                NavController navController = Navigation.findNavController(currentActivity,R.id.nav_host_fragment);
+                navController.navigate(R.id.viewpost);
+            }
+        };
+        mAdapter = new MyAdapter(allPostList, clickListener);
+        homePostsRecyclerView.setAdapter(mAdapter);
+    }
+
+    public void setPostedRecyclerview(RecyclerView rv){
+        postedPostRecyclerView = rv;
+    }
+
+    public void  displayPostedPosts(){
+        if(postedPostRecyclerView == null) return;
+        RecyclerView.Adapter mAdapter;
+        // specify an adapter
+        if(postedPostList == null || postedPostList.size() == 0){
+            View contextView = this.findViewById(R.id.nav_host_fragment);
+            Snackbar.make(contextView, "No Posted Posts to Display", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = postedPostRecyclerView.indexOfChild(v);
+                currentPost = postedPostList.get(pos);
+                NavController navController = Navigation.findNavController(currentActivity,R.id.nav_host_fragment);
+                navController.navigate(R.id.viewpost);
+            }
+        };
+
+        mAdapter = new MyAdapter(postedPostList, clickListener);
+        postedPostRecyclerView.setAdapter(mAdapter);
+    }
+
+    public void setPurchasedRecyclerview(RecyclerView rv){
+        purchasedPostRecylerView = rv;
+    }
+
+    public void  displayPurchasedPosts(){
+        if(purchasedPostRecylerView== null) return;
+        RecyclerView.Adapter mAdapter;
+        // specify an adapter
+        if(purchasedPostList == null || purchasedPostList.size() == 0){
+            View contextView = this.findViewById(R.id.nav_host_fragment);
+            Snackbar.make(contextView, "No Purchased Posts to Display", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = purchasedPostRecylerView.indexOfChild(v);
+                currentPost = purchasedPostList.get(pos);
+                NavController navController = Navigation.findNavController(currentActivity,R.id.nav_host_fragment);
+                navController.navigate(R.id.viewpost);
+            }
+        };
+        mAdapter = new MyAdapter(purchasedPostList,clickListener);
+        purchasedPostRecylerView.setAdapter(mAdapter);
+    }
+
+    public Post getCurrentPost(){
+        return currentPost;
+    }
 }

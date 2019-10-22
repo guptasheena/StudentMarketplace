@@ -71,9 +71,56 @@ public class Database extends SQLiteOpenHelper {
         }
     }
     // Delete a user
-    public void RemoveUser(int recipe_id){
+    public void RemoveUser(String email){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_Name, KEY_ID+" = ?",new String[]{String.valueOf(recipe_id)});
+        db.delete(TABLE_Name, KEY_EMAIL+" = ?",new String[]{email});
         db.close();
+    }
+
+    // Get All HomePosts
+    public ArrayList<Post> GetAllPosts(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Post> postsList = new ArrayList<>();
+        /*
+        String query = "SELECT * FROM "+ TABLE_Name+";";
+        Cursor cursor = db.rawQuery(query,null);
+        while (cursor.moveToNext()){
+
+            ByteArrayInputStream imageStream = new ByteArrayInputStream(cursor.getBlob(cursor.getColumnIndex(KEY_PIC));
+            Bitmap theImage= BitmapFactory.decodeStream(imageStream);
+            Post p = new Post(cursor.getString(cursor.getColumnIndex(KEY_NAME)),cursor.getString(cursor.getColumnIndex(KEY_DESC)),theImage));
+            postsList.add(p);
+        }*/
+        Post p = new Post("Post1","This is post desc1",null);
+        postsList.add(p);
+        p = new Post("Post2","This is post desc2",null);
+        postsList.add(p);
+        return  postsList;
+    }
+
+    public ArrayList<Post> GetPostedPosts(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Post> postsList = new ArrayList<>();
+        Post p = new Post("Post3","This is post desc3",null);
+        postsList.add(p);
+        p = new Post("Post4","This is post desc4",null);
+        postsList.add(p);
+        return  postsList;
+    }
+
+    public ArrayList<Post> GetPurchasedPosts(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Post> postsList = new ArrayList<>();
+        Post p = new Post("Post5","This is post desc5",null);
+        postsList.add(p);
+        p = new Post("Post6","This is post desc6",null);
+        postsList.add(p);
+        p = new Post("Post7","This is post desc7",null);
+        postsList.add(p);
+        p = new Post("Post8","This is post desc8",null);
+        postsList.add(p);
+        return  postsList;
     }
 }

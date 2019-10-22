@@ -4,11 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class Posts extends Fragment {
+
+public class HomePosts extends Fragment {
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +24,13 @@ public class Posts extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
         HomeActivity parent = (HomeActivity) getActivity();
+        recyclerView = (RecyclerView)view.findViewById(R.id.post_list_recycler);
+
+        // use a linear layout manager
+        layoutManager = new GridLayoutManager(parent,3);
+        recyclerView.setLayoutManager(layoutManager);
+        parent.setHomePostsRecyclerview(recyclerView);
+        parent.displayHomePosts();
         return view;
     }
 }

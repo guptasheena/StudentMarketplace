@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_purchased" />
     <fragment
         android:id="@+id/posts"
-        android:name="com.cmpe277.studentmarketplace.Posts"
+        android:name="com.cmpe277.studentmarketplace.HomePosts"
         android:label="Posts"
         tools:layout="@layout/fragment_posts" >
     </fragment>
