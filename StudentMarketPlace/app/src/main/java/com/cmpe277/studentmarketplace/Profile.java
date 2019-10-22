@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class Profile extends Fragment {
     TextView currentUser;
     @Override
@@ -23,6 +25,8 @@ public class Profile extends Fragment {
         HomeActivity parent = (HomeActivity)getActivity();
         currentUser = view.findViewById(R.id.user_email);
         currentUser.setText(parent.getCurrentUserEmail());
+        Geocoder geocoder = new Geocoder(parent);
+        LatLng l = geocoder.getLatLong("1600 Amphitheatre Pkwy", "Mountain View", "CA", 94043, "USA");
         return view;
     }
 }

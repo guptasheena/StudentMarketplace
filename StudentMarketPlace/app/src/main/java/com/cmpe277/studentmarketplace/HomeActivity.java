@@ -2,6 +2,8 @@ package com.cmpe277.studentmarketplace;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +17,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     String currentUserEmail="";
@@ -92,4 +97,5 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public String getCurrentUserEmail(){
         return currentUserEmail;
     }
+
 }
