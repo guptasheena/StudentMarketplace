@@ -19,5 +19,19 @@
         android:id="@+id/posts"
         android:name="com.cmpe277.studentmarketplace.Posts"
         android:label="Posts"
-        tools:layout="@layout/fragment_posts" />
+        tools:layout="@layout/fragment_posts" >
+    </fragment>
+    <fragment
+        android:id="@+id/addpost"
+        android:name="com.cmpe277.studentmarketplace.AddPost"
+        android:label="Add New Post"
+        tools:layout="@layout/fragment_addpost" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/viewpost"
+        android:name="com.cmpe277.studentmarketplace.ViewPost"
+        android:label="View"
+        tools:layout="@layout/fragment_viewpost" >
+    </fragment>
 </navigation>

@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
         sp = getApplicationContext().getSharedPreferences(getString(R.string.app_pref),MODE_PRIVATE);
         if(sp.getBoolean("logged",false)){
             Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
-            //homeIntent.putExtras();
             startActivity(homeIntent);
         }
         signup_link.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                             onLoginSuccess();
                         }
                         else onLoginFailed(result.getMessage());
-                        // onLoginFailed();
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -110,13 +108,8 @@ public class LoginActivity extends AppCompatActivity {
         sp.edit().putString("email",email_input.getText().toString()).apply();
         sp.edit().putBoolean("logged",true).apply();
         login_btn.setEnabled(true);
-        //Toast.makeText(getBaseContext(), "Login success", Toast.LENGTH_LONG).show();
-        //Bundle dataBundle = new Bundle();
-        //dataBundle.putString("email", email_input.getText().toString());
         Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
-        //homeIntent.putExtras(dataBundle);
         startActivity(homeIntent);
-        //finish();
     }
 
     public void onLoginFailed(String msg) {

@@ -7,6 +7,11 @@
         android:title="Home"
         app:showAsAction="always" />
     <item
+        android:id="@+id/addpost"
+        android:icon="@drawable/add_new"
+        android:title="Add Post"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/logout"
         android:icon="@drawable/logout_icon"
         android:title="Logout"

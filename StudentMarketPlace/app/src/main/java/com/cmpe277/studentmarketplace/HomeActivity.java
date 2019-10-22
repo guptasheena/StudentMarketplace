@@ -19,13 +19,12 @@ import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     String currentUserEmail="";
-    SharedPreferences sp;// getApplicationContext().getSharedPreferences(getString(R.string.app_pref),MODE_PRIVATE);
+    SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Intent loginIntent = getIntent();
-        //Bundle dataBundle = loginIntent.getExtras();
         sp = getApplicationContext().getSharedPreferences(getString(R.string.app_pref),MODE_PRIVATE);
         currentUserEmail = sp.getString("email","");//dataBundle.getString("email");
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -70,11 +69,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 NavigationView navView = findViewById(R.id.nav_view);
                 onNavigationItemSelected(navView.getMenu().getItem(0));
                 break;
-            case R.id.logout:currentUserEmail = "";
+            case R.id.logout:
+                currentUserEmail = "";
                 sp.edit().putBoolean("logged",false).apply();
                 sp.edit().putString("email","");
                 Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(loginIntent);
+                break;
+            case R.id.addpost:
+                NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
+                NavigationUI.onNavDestinationSelected(menuItem, navController);
                 break;
         }
         return super.onOptionsItemSelected(menuItem);
