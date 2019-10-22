@@ -9,8 +9,16 @@
         android:id="@+id/profile"
         android:title="My Stuff" />
     <item
+        android:icon="@drawable/add_new"
+        android:id="@+id/addpost"
+        android:title="Add new post" />
+    <item
         android:icon="@drawable/fav_filled"
-        android:id="@+id/bookmarks"
-        android:title="Bookmarks" />
+        android:id="@+id/posted"
+        android:title="Items Posted" />
+    <item
+        android:icon="@drawable/fav_filled"
+        android:id="@+id/purchased"
+        android:title="Items Purchased" />
 
 </menu>

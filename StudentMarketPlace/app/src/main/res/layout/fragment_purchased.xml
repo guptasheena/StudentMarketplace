@@ -2,16 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <TextView
-        android:id="@+id/user_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></TextView>
-
-    <Button
-        android:id="@+id/snack_msg"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Display email in snack"></Button>
-
+        android:text="Items purchased by the user"/>
 </LinearLayout>

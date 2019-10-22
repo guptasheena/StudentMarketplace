@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 
 public class Profile extends Fragment {
     TextView currentUser;
@@ -22,11 +24,18 @@ public class Profile extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        HomeActivity parent = (HomeActivity)getActivity();
+        final HomeActivity parent = (HomeActivity)getActivity();
         currentUser = view.findViewById(R.id.user_email);
         currentUser.setText(parent.getCurrentUserEmail());
-        Geocoder geocoder = new Geocoder(parent);
-        LatLng l = geocoder.getLatLong("1600 Amphitheatre Pkwy", "Mountain View", "CA", 94043, "USA");
+        Button b = (Button) view.findViewById(R.id.snack_msg);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(parent.findViewById(R.id.nav_host_fragment),"This is the current user: "+parent.getCurrentUserEmail(),Snackbar.LENGTH_LONG).show();
+            }
+        });
+        // Geocoder geocoder = new Geocoder(parent);
+        //LatLng l = geocoder.getLatLong("1600 Amphitheatre Pkwy", "Mountain View", "CA", 94043, "USA");
         return view;
     }
 }

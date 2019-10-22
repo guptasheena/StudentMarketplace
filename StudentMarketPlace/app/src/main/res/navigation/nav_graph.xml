@@ -11,10 +11,15 @@
         android:label="Account"
         tools:layout="@layout/fragment_profile" />
     <fragment
-        android:id="@+id/bookmarks"
-        android:name="com.cmpe277.studentmarketplace.Bookmarks"
-        android:label="Saved Posts"
-        tools:layout="@layout/fragment_bookmarks" />
+        android:id="@+id/posted"
+        android:name="com.cmpe277.studentmarketplace.Posted"
+        android:label="Items Posted"
+        tools:layout="@layout/fragment_posted" />
+    <fragment
+        android:id="@+id/purchased"
+        android:name="com.cmpe277.studentmarketplace.Purchased"
+        android:label="Items Purchased"
+        tools:layout="@layout/fragment_purchased" />
     <fragment
         android:id="@+id/posts"
         android:name="com.cmpe277.studentmarketplace.Posts"
