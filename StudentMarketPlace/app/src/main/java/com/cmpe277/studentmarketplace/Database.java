@@ -92,9 +92,9 @@ public class Database extends SQLiteOpenHelper {
             Post p = new Post(cursor.getString(cursor.getColumnIndex(KEY_NAME)),cursor.getString(cursor.getColumnIndex(KEY_DESC)),theImage));
             postsList.add(p);
         }*/
-        Post p = new Post("Post1","This is post desc1",null);
+        Post p = new Post("Post1","This is post desc1","User1@sjsu.com",null);
         postsList.add(p);
-        p = new Post("Post2","This is post desc2",null);
+        p = new Post("Post2","This is post desc2","User2@sjsu.com",null);
         postsList.add(p);
         return  postsList;
     }
@@ -103,9 +103,9 @@ public class Database extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Post> postsList = new ArrayList<>();
-        Post p = new Post("Post3","This is post desc3",null);
+        Post p = new Post("Post3","This is post desc3","User3@sjsu.com",null);
         postsList.add(p);
-        p = new Post("Post4","This is post desc4",null);
+        p = new Post("Post4","This is post desc4","User4@sjsu.com",null);
         postsList.add(p);
         return  postsList;
     }
@@ -113,13 +113,13 @@ public class Database extends SQLiteOpenHelper {
     public ArrayList<Post> GetPurchasedPosts(){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Post> postsList = new ArrayList<>();
-        Post p = new Post("Post5","This is post desc5",null);
+        Post p = new Post("Post5","This is post desc5","User5@sjsu.com",null);
         postsList.add(p);
-        p = new Post("Post6","This is post desc6",null);
+        p = new Post("Post6","This is post desc6","User6@sjsu.com",null);
         postsList.add(p);
-        p = new Post("Post7","This is post desc7",null);
+        p = new Post("Post7","This is post desc7","User7@sjsu.com",null);
         postsList.add(p);
-        p = new Post("Post8","This is post desc8",null);
+        p = new Post("Post8","This is post desc8","User8@sjsu.com",null);
         postsList.add(p);
         return  postsList;
     }

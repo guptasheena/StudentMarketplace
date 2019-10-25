@@ -1,6 +1,7 @@
 package com.cmpe277.studentmarketplace;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +37,8 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Finish the registration screen and return to the Login activity
-                finish();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -80,7 +82,7 @@ public class SignupActivity extends AppCompatActivity {
     public void onSignupSuccess() {
         signup_btn.setEnabled(true);
         setResult(RESULT_OK, null);
-        Toast.makeText(getBaseContext(), "SignUp Success", Toast.LENGTH_LONG).show();
+        finish();
     }
 
     public void onSignupFailed(String msg) {

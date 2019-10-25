@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -24,7 +23,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    String currentUserEmail="";
+    String currentUserEmail=""; //current logged in user
+    String profileUser =""; // user whose profile needs to be viewed
     SharedPreferences sp;
     RecyclerView homePostsRecyclerView,postedPostRecyclerView,purchasedPostRecylerView;
     ArrayList<Post> allPostList,postedPostList,purchasedPostList;
@@ -35,9 +35,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Intent loginIntent = getIntent();
         sp = getApplicationContext().getSharedPreferences(getString(R.string.app_pref),MODE_PRIVATE);
-        currentUserEmail = sp.getString("email","");//dataBundle.getString("email");
+        currentUserEmail = sp.getString("email","");
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         AppBarConfiguration appBarConfiguration =
@@ -47,6 +46,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navView = findViewById(R.id.nav_view);
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        MenuItem m = (MenuItem)navView.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                //on click of my stuff menuitem the current user profile should display
+                setViewProfileOf(getCurrentUserEmail());
+                onNavigationItemSelected(menuItem);
+                return true;
+            }
+        });
         db = new Database(this);
         //First load will have all the posts
         allPostList = db.GetAllPosts();
@@ -108,6 +116,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public String getCurrentUserEmail(){
         return currentUserEmail;
+    }
+    public void setViewProfileOf(String email){
+        profileUser = email;
+    }
+    public String getViewProfileOf(){
+        return profileUser;
     }
 
     public void setHomePostsRecyclerview(RecyclerView rv){

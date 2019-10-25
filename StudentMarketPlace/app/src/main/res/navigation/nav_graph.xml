@@ -39,4 +39,11 @@
         android:label="View"
         tools:layout="@layout/fragment_viewpost" >
     </fragment>
+
+    <fragment
+        android:id="@+id/other_profile"
+        android:name="com.cmpe277.studentmarketplace.Profile"
+        android:label="View profile of other user"
+        tools:layout="@layout/fragment_profile" >
+    </fragment>
 </navigation>

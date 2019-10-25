@@ -31,6 +31,7 @@ public class HomePosts extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         parent.setHomePostsRecyclerview(recyclerView);
         parent.displayHomePosts();
+        parent.setViewProfileOf(parent.getCurrentUserEmail()); // from home page we can only view current users profile on clicking my stuff
         return view;
     }
 }
