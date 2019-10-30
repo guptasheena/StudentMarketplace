@@ -3,6 +3,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,6 +20,7 @@ public class ViewPost extends Fragment {
     ViewPager viewPager;
     int images[] = {R.drawable.ic_launcher_background, R.drawable.no_image, R.drawable.home_icon, R.drawable.logo};
     ImageSliderAdapter imageSliderAdapter;
+    HomeActivity parent;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +31,7 @@ public class ViewPost extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_viewpost, container, false);
-        final HomeActivity parent = (HomeActivity)getActivity();
+        parent = (HomeActivity)getActivity();
         TextView t = (TextView)view.findViewById(R.id.view_post_text);
         TextView t2 = (TextView)view.findViewById(R.id.post_owner);
         final Post p = parent.getCurrentPost();
@@ -63,4 +66,15 @@ public class ViewPost extends Fragment {
         //display option to mark sold if the current user is the owner
         return view;
     }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        //only owner can mark an item as sold
+        if(parent.getCurrentPost().getOwnerEmail().equals(parent.getCurrentUserEmail())) {
+            MenuItem menuItem = menu.findItem(R.id.sold);
+            menuItem.setVisible(true);
+        }
+    }
+
 }

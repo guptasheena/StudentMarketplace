@@ -1,5 +1,7 @@
 package com.cmpe277.studentmarketplace;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -82,6 +85,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.sold).setVisible(false);
         return true;
     }
 
@@ -105,6 +109,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
                 NavigationUI.onNavDestinationSelected(menuItem, navController);
                 break;
+            case R.id.sold: soldMenuClick();break;
+
         }
         return super.onOptionsItemSelected(menuItem);
     }
@@ -206,5 +212,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public Post getCurrentPost(){
         return currentPost;
+    }
+
+    public void soldMenuClick(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity,R.style.AppTheme_Dark_Dialog);//getActivity () for fragment?
+        builder.setMessage("Are you sure you want to mark "+getCurrentPost().getName()+" as sold?")
+                .setTitle("Mark as sold");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                Toast.makeText(currentActivity,"Item marked as sold",Toast.LENGTH_LONG).show();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

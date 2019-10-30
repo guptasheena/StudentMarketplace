@@ -87,7 +87,7 @@ public class Database extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Post> postsList = new ArrayList<>();
-        Post p = new Post("Post1","This is post desc1","User1@sjsu.com",null);
+        Post p = new Post("Post1","This is post desc1","User1@sjsu.edu",null);
         postsList.add(p);
         p = new Post("Post2","This is post desc2","User2@sjsu.com",null);
         postsList.add(p);
@@ -108,7 +108,7 @@ public class Database extends SQLiteOpenHelper {
     public ArrayList<Post> GetPurchasedPosts(){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Post> postsList = new ArrayList<>();
-        Post p = new Post("Post5","This is post desc5","User5@sjsu.com",null);
+        Post p = new Post("Post5","This is post desc5","User5@sjsu.edu",null);
         postsList.add(p);
         p = new Post("Post6","This is post desc6","User6@sjsu.com",null);
         postsList.add(p);
