@@ -1,9 +1,12 @@
 package com.cmpe277.studentmarketplace;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -34,6 +37,15 @@ public class ViewPost extends Fragment {
                 parent.setViewProfileOf(p.getOwnerEmail()); // view profile of post owner
                 NavController navController = Navigation.findNavController(parent,R.id.nav_host_fragment);
                 navController.navigate(R.id.other_profile);
+            }
+        });
+        ImageButton map = (ImageButton)view.findViewById(R.id.mapIcon);
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
+                startActivity(intent);
             }
         });
         return view;

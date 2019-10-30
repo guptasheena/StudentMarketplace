@@ -11,40 +11,45 @@ import java.util.ArrayList;
 public class Database extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "market_db";
-    private static final String TABLE_Name = "Users";
-    private static final String KEY_ID = "id";
-    private static final String KEY_EMAIL= "Email";
-    private static final String KEY_PWD= "Password";
     public Database(Context context){
         super(context,DB_NAME, null, DB_VERSION);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db){
-        String CREATE_TABLE = "CREATE TABLE " + TABLE_Name + "("
-                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_EMAIL + " TEXT,"
-                + KEY_PWD+ " TEXT"+ ")";
-        db.execSQL(CREATE_TABLE);
+        String createUser = "CREATE TABLE User(id INTEGER PRIMARY KEY AUTOINCREMENT, email  TEXT, password TEXT, first_name TEXT, last_name TEXT, phone TEXT, address TEXT);";
+        String createItem = "CREATE TABLE Item(id INTEGER PRIMARY KEY AUTOINCREMENT, name  TEXT, category TEXT, description TEXT, price REAL, posted_date DATETIME, posted_by TEXT, FOREIGN KEY (posted_by) REFERENCES User (email))";
+        String itemImages = "CREATE TABLE ItemImages(id INTEGER PRIMARY KEY AUTOINCREMENT, itemId INTEGER, image BLOB, FOREIGN KEY (itemId) REFERENCES Item (id))";
+        String purchaseInfo = "CREATE TABLE PurchaseInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, itemId INTEGER, purchased_by TEXT, purchased_date DATETIME, FOREIGN KEY (purchased_by) REFERENCES User (email))";
+        db.execSQL(createUser);
+        db.execSQL(createItem);
+        db.execSQL(itemImages);
+        db.execSQL(purchaseInfo);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_Name);
+        db.execSQL("DROP TABLE IF EXISTS User");
+        db.execSQL("DROP TABLE IF EXISTS Item");
+        db.execSQL("DROP TABLE IF EXISTS ItemImages");
+        db.execSQL("DROP TABLE IF EXISTS PurchaseInfo");
         onCreate(db);
     }
 
     // Adding new User Details
     public DbResult insertNewUser(String email, String password){
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT "+KEY_PWD+" FROM "+ TABLE_Name+" where "+KEY_EMAIL+" = '"+email+"';";
+        String query = "SELECT password FROM User where email = '"+email+"';";
         Cursor cursor = db.rawQuery(query,null);
         if(cursor.getCount() == 0) {
             //Get the Data Repository in write mode
             db = this.getWritableDatabase();
             //Create a new map of values, where column names are the keys
             ContentValues cValues = new ContentValues();
-            cValues.put(KEY_EMAIL, email);
-            cValues.put(KEY_PWD, password);
+            cValues.put("email", email);
+            cValues.put("password", password);
             // Insert the new row, returning the primary key value of the new row
-            long newRowId = db.insert(TABLE_Name, null, cValues);
+            long newRowId = db.insert("User", null, cValues);
             return new DbResult("SignUp Success",true);
         }
         else{
@@ -55,11 +60,11 @@ public class Database extends SQLiteOpenHelper {
     //Verify user
     public DbResult validUser(String email, String password){
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT "+KEY_PWD+" FROM "+ TABLE_Name+" where "+KEY_EMAIL+" = '"+email+"';";
+        String query = "SELECT password FROM User where email = '"+email+"';";
         Cursor cursor = db.rawQuery(query,null);
         if(cursor.getCount() != 0){
             cursor.moveToFirst();
-            if(password.equals(cursor.getString(cursor.getColumnIndex(KEY_PWD)))){
+            if(password.equals(cursor.getString(cursor.getColumnIndex("password")))){
                 return new DbResult("Login success",true);
             }
             else{
@@ -73,7 +78,7 @@ public class Database extends SQLiteOpenHelper {
     // Delete a user
     public void RemoveUser(String email){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_Name, KEY_EMAIL+" = ?",new String[]{email});
+        db.delete("User", "email = ?",new String[]{email});
         db.close();
     }
 
@@ -82,16 +87,6 @@ public class Database extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Post> postsList = new ArrayList<>();
-        /*
-        String query = "SELECT * FROM "+ TABLE_Name+";";
-        Cursor cursor = db.rawQuery(query,null);
-        while (cursor.moveToNext()){
-
-            ByteArrayInputStream imageStream = new ByteArrayInputStream(cursor.getBlob(cursor.getColumnIndex(KEY_PIC));
-            Bitmap theImage= BitmapFactory.decodeStream(imageStream);
-            Post p = new Post(cursor.getString(cursor.getColumnIndex(KEY_NAME)),cursor.getString(cursor.getColumnIndex(KEY_DESC)),theImage));
-            postsList.add(p);
-        }*/
         Post p = new Post("Post1","This is post desc1","User1@sjsu.com",null);
         postsList.add(p);
         p = new Post("Post2","This is post desc2","User2@sjsu.com",null);
