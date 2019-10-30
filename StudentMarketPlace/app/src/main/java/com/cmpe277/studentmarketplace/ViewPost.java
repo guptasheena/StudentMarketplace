@@ -12,8 +12,12 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.viewpager.widget.ViewPager;
 
 public class ViewPost extends Fragment {
+    ViewPager viewPager;
+    int images[] = {R.drawable.ic_launcher_background, R.drawable.no_image, R.drawable.home_icon, R.drawable.logo};
+    ImageSliderAdapter imageSliderAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +43,8 @@ public class ViewPost extends Fragment {
                 navController.navigate(R.id.other_profile);
             }
         });
+
+        //display directions
         ImageButton map = (ImageButton)view.findViewById(R.id.mapIcon);
         map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +54,13 @@ public class ViewPost extends Fragment {
                 startActivity(intent);
             }
         });
+
+        //display images
+        viewPager = (ViewPager)view.findViewById(R.id.viewPager);
+        imageSliderAdapter = new ImageSliderAdapter(parent, images);
+        viewPager.setAdapter(imageSliderAdapter);
+
+        //display option to mark sold if the current user is the owner
         return view;
     }
 }
