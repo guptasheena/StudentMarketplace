@@ -1,6 +1,7 @@
 package com.cmpe277.studentmarketplace;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,15 @@ import android.widget.Toast;
 
 import androidx.viewpager.widget.PagerAdapter;
 
+import java.util.ArrayList;
+
 public class ImageSliderAdapter extends PagerAdapter {
     Context context;
-    int images[];
+    ArrayList<Bitmap> images;
     LayoutInflater layoutInflater;
 
 
-    public ImageSliderAdapter(Context context, int images[]) {
+    public ImageSliderAdapter(Context context, ArrayList<Bitmap> images) {
         this.context = context;
         this.images = images;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -24,7 +27,7 @@ public class ImageSliderAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -37,7 +40,7 @@ public class ImageSliderAdapter extends PagerAdapter {
         View itemView = layoutInflater.inflate(R.layout.imageslider_layout, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.image);
-        imageView.setImageResource(images[position]);
+        imageView.setImageBitmap(images.get(position));
 
         container.addView(itemView);
 

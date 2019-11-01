@@ -3,6 +3,7 @@ package com.cmpe277.studentmarketplace;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -55,8 +56,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // - replace the contents of the view with that element
         TextView text1 = holder.cardView.findViewById(R.id.post_name);
         text1.setText(mDataset.get(position).getName());
-        TextView text2 = holder.cardView.findViewById(R.id.post_desc);
-        text2.setText(mDataset.get(position).getDescription());
+        ImageView image = holder.cardView.findViewById(R.id.post_image);
+        if(mDataset.get(position).getMainImage() != null) {
+            image.setImageBitmap(mDataset.get(position).getMainImage());
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

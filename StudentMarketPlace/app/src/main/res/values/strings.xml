@@ -5,4 +5,9 @@
     <string name="enter_email">Please enter your email</string>
     <string name="enter_pwd">Please enter the password</string>
     <string name="app_pref">Marketplace_Preferences</string>
+    <string-array name="categories">
+        <item>Furniture</item>
+        <item>Books</item>
+        <item>Vehicles</item>
+    </string-array>
 </resources>

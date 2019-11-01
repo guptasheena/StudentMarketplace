@@ -137,6 +137,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void  displayHomePosts(){
+        allPostList = db.GetAllPosts();
         if(homePostsRecyclerView == null) return;
         RecyclerView.Adapter mAdapter;
         // specify an adapter

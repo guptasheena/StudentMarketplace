@@ -18,7 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 
 public class ViewPost extends Fragment {
     ViewPager viewPager;
-    int images[] = {R.drawable.ic_launcher_background, R.drawable.no_image, R.drawable.home_icon, R.drawable.logo};
+    //int images[] = {R.drawable.ic_launcher_background, R.drawable.no_image, R.drawable.home_icon, R.drawable.logo};
     ImageSliderAdapter imageSliderAdapter;
     HomeActivity parent;
     @Override
@@ -60,7 +60,7 @@ public class ViewPost extends Fragment {
 
         //display images
         viewPager = (ViewPager)view.findViewById(R.id.viewPager);
-        imageSliderAdapter = new ImageSliderAdapter(parent, images);
+        imageSliderAdapter = new ImageSliderAdapter(parent, p.getAllImages());
         viewPager.setAdapter(imageSliderAdapter);
 
         //display option to mark sold if the current user is the owner
