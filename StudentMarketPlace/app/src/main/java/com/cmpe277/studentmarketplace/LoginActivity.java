@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                         DbResult result = db.validUser(email,password);
                         // On complete call either onLoginSuccess or onLoginFailed
                         if(result.getStatus()){
-                            onLoginSuccess();
+                            onLoginSuccess(email_input.getText().toString());
                         }
                         else onLoginFailed(result.getMessage());
                         progressDialog.dismiss();
@@ -90,7 +90,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode,resultCode,data);
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
-                onLoginSuccess();
+                Bundle b = data.getExtras();
+                String email = b.getString("email");
+                onLoginSuccess(email);
                 this.finish();
             }
         }
@@ -102,8 +104,8 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
-        sp.edit().putString("email",email_input.getText().toString()).apply();
+    public void onLoginSuccess(String email) {
+        sp.edit().putString("email",email).apply();
         sp.edit().putBoolean("logged",true).apply();
         login_btn.setEnabled(true);
         Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);

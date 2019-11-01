@@ -2,6 +2,7 @@ package com.cmpe277.studentmarketplace;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,7 @@ public class SignupActivity extends AppCompatActivity {
     Button signup_btn;
     TextView login_link;
     Database db;
+    SharedPreferences sp;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +83,11 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         signup_btn.setEnabled(true);
-        setResult(RESULT_OK, null);
+        Bundle b= new Bundle();
+        b.putString("email",email_input.getText().toString());
+        Intent i = new Intent(this,LoginActivity.class);
+        i.putExtras(b);
+        setResult(RESULT_OK, i);
         finish();
     }
 

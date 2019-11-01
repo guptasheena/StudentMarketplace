@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -221,10 +223,40 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
-                Toast.makeText(currentActivity,"Item marked as sold",Toast.LENGTH_LONG).show();
+                markSoldDialog();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void markSoldDialog(){
+        final EditText input = new EditText(currentActivity);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity,R.style.AppTheme_Dark_Dialog);//getActivity () for fragment?
+        builder.setMessage("Enter the email of the customer:")
+                .setTitle("Mark "+getCurrentPost().getName()+" as sold").setView(input);
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                String email = input.getText().toString();
+                DbResult result = db.createPurchaseRecord(getCurrentPost().getItemId(),email);
+                if(result.getStatus()) {
+                    Toast.makeText(currentActivity, "Item marked as sold to " + email, Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(currentActivity,result.getMessage(),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
             }

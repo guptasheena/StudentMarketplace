@@ -1,17 +1,21 @@
 package com.cmpe277.studentmarketplace;
 
-import android.media.Image;
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
 
 public class Post {
     private String name,description;
-    private Image[] associated_pics;
     private String ownerEmail;
+    private int itemId;
+    private ArrayList<Bitmap> associated_pics;
 
-    public Post(String n, String d, String e, Image[] i){
+    public Post(int id, String n, String d, String e, ArrayList<Bitmap> i){
         this.name=n;
         this.description=d;
         this.associated_pics=i;
         this.ownerEmail=e;
+        this.itemId = id;
     }
 
     public String getName(){
@@ -22,16 +26,20 @@ public class Post {
         return this.description;
     }
 
-    public Image[] getAllImages(){
+    public ArrayList<Bitmap> getAllImages(){
         return associated_pics;
     }
 
     public String getOwnerEmail(){ return ownerEmail; }
 
-    public Image getMainImage(){
-        if(associated_pics == null || associated_pics.length > 0)
-            return associated_pics[0];
+    public Bitmap getMainImage(){
+        if(associated_pics == null || associated_pics.size() > 0)
+            return associated_pics.get(0);
         else return null;
+    }
+
+    public  int getItemId(){
+        return itemId;
     }
 
 }

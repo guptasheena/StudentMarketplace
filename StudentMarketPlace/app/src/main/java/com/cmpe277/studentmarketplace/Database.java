@@ -18,9 +18,9 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db){
         String createUser = "CREATE TABLE User(id INTEGER PRIMARY KEY AUTOINCREMENT, email  TEXT, password TEXT, first_name TEXT, last_name TEXT, phone TEXT, address TEXT);";
-        String createItem = "CREATE TABLE Item(id INTEGER PRIMARY KEY AUTOINCREMENT, name  TEXT, category TEXT, description TEXT, price REAL, posted_date DATETIME, posted_by TEXT, FOREIGN KEY (posted_by) REFERENCES User (email))";
+        String createItem = "CREATE TABLE Item(id INTEGER PRIMARY KEY AUTOINCREMENT, name  TEXT, category TEXT, description TEXT, price REAL, posted_date DATETIME DEFAULT CURRENT_TIMESTAMP, posted_by TEXT, FOREIGN KEY (posted_by) REFERENCES User (email))";
         String itemImages = "CREATE TABLE ItemImages(id INTEGER PRIMARY KEY AUTOINCREMENT, itemId INTEGER, image BLOB, FOREIGN KEY (itemId) REFERENCES Item (id))";
-        String purchaseInfo = "CREATE TABLE PurchaseInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, itemId INTEGER, purchased_by TEXT, purchased_date DATETIME, FOREIGN KEY (purchased_by) REFERENCES User (email))";
+        String purchaseInfo = "CREATE TABLE PurchaseInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, itemId INTEGER, purchased_by TEXT, purchased_date DATETIME DEFAULT CURRENT_TIMESTAMP , FOREIGN KEY (purchased_by) REFERENCES User (email))";
         db.execSQL(createUser);
         db.execSQL(createItem);
         db.execSQL(itemImages);
@@ -87,9 +87,9 @@ public class Database extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Post> postsList = new ArrayList<>();
-        Post p = new Post("Post1","This is post desc1","User1@sjsu.edu",null);
+        Post p = new Post(1,"Post1","This is post desc1","User1@sjsu.edu",null);
         postsList.add(p);
-        p = new Post("Post2","This is post desc2","User2@sjsu.com",null);
+        p = new Post(2,"Post2","This is post desc2","User2@sjsu.com",null);
         postsList.add(p);
         return  postsList;
     }
@@ -98,9 +98,9 @@ public class Database extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Post> postsList = new ArrayList<>();
-        Post p = new Post("Post3","This is post desc3","User3@sjsu.com",null);
+        Post p = new Post(3,"Post3","This is post desc3","User3@sjsu.com",null);
         postsList.add(p);
-        p = new Post("Post4","This is post desc4","User4@sjsu.com",null);
+        p = new Post(4,"Post4","This is post desc4","User4@sjsu.com",null);
         postsList.add(p);
         return  postsList;
     }
@@ -108,14 +108,31 @@ public class Database extends SQLiteOpenHelper {
     public ArrayList<Post> GetPurchasedPosts(){
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<Post> postsList = new ArrayList<>();
-        Post p = new Post("Post5","This is post desc5","User5@sjsu.edu",null);
+        Post p = new Post(5,"Post5","This is post desc5","User5@sjsu.edu",null);
         postsList.add(p);
-        p = new Post("Post6","This is post desc6","User6@sjsu.com",null);
+        p = new Post(6,"Post6","This is post desc6","User6@sjsu.com",null);
         postsList.add(p);
-        p = new Post("Post7","This is post desc7","User7@sjsu.com",null);
+        p = new Post(7,"Post7","This is post desc7","User7@sjsu.com",null);
         postsList.add(p);
-        p = new Post("Post8","This is post desc8","User8@sjsu.com",null);
+        p = new Post(8,"Post8","This is post desc8","User8@sjsu.com",null);
         postsList.add(p);
         return  postsList;
+    }
+
+    public DbResult createPurchaseRecord(int item_id, String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT password FROM User where email = '"+email+"';";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.getCount() > 0) {
+            db = this.getWritableDatabase();
+            ContentValues cValues = new ContentValues();
+            cValues.put("itemId", item_id);
+            cValues.put("purchased_by", email);
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = db.insert("PurchaseInfo", null, cValues);
+            return new DbResult("Item Marked as Sold",false);
+        }else{
+            return new DbResult("Email doesn't exist",false);
+        }
     }
 }
