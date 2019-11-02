@@ -1,6 +1,10 @@
 package com.cmpe277.studentmarketplace;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -30,6 +34,9 @@ public class Post {
     }
 
     public ArrayList<Bitmap> getAllImages(){
+        if(associated_pics == null || associated_pics.size() ==0){
+            return new ArrayList<Bitmap>();
+        }
         return associated_pics;
     }
 

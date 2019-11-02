@@ -1,5 +1,7 @@
 package com.cmpe277.studentmarketplace;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
+
+import java.util.ArrayList;
 
 public class ViewPost extends Fragment {
     ViewPager viewPager;
@@ -60,7 +64,9 @@ public class ViewPost extends Fragment {
 
         //display images
         viewPager = (ViewPager)view.findViewById(R.id.viewPager);
-        imageSliderAdapter = new ImageSliderAdapter(parent, p.getAllImages());
+        ArrayList<Bitmap> images = p.getAllImages();
+        if(images.size() == 0) images.add(((BitmapDrawable)getResources().getDrawable(R.drawable.no_image)).getBitmap());
+        imageSliderAdapter = new ImageSliderAdapter(parent, images);
         viewPager.setAdapter(imageSliderAdapter);
 
         //display option to mark sold if the current user is the owner
