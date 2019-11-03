@@ -1,4 +1,5 @@
 package com.cmpe277.studentmarketplace;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -25,34 +26,36 @@ public class ViewPost extends Fragment {
     //int images[] = {R.drawable.ic_launcher_background, R.drawable.no_image, R.drawable.home_icon, R.drawable.logo};
     ImageSliderAdapter imageSliderAdapter;
     HomeActivity parent;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_viewpost, container, false);
-        parent = (HomeActivity)getActivity();
-        TextView t = (TextView)view.findViewById(R.id.view_post_text);
-        TextView t2 = (TextView)view.findViewById(R.id.post_owner);
+        parent = (HomeActivity) getActivity();
+        TextView t = view.findViewById(R.id.view_post_text);
+        TextView t2 = view.findViewById(R.id.post_owner);
         final Post p = parent.getCurrentPost();
-        t.setText("This is to display info for Post: "+p.getName());
-        t2.setText("Posted By: "+p.getOwnerEmail());
-        Button b = (Button)view.findViewById(R.id.view_owner);
+        t.setText("This is to display info for Post: " + p.getName());
+        t2.setText("Posted By: " + p.getOwnerEmail());
+        Button b = (Button) view.findViewById(R.id.view_owner);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 parent.setViewProfileOf(p.getOwnerEmail()); // view profile of post owner
-                NavController navController = Navigation.findNavController(parent,R.id.nav_host_fragment);
+                NavController navController = Navigation.findNavController(parent, R.id.nav_host_fragment);
                 navController.navigate(R.id.other_profile);
             }
         });
 
         //display directions
-        ImageButton map = (ImageButton)view.findViewById(R.id.mapIcon);
+        ImageButton map = view.findViewById(R.id.mapIcon);
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,9 +66,10 @@ public class ViewPost extends Fragment {
         });
 
         //display images
-        viewPager = (ViewPager)view.findViewById(R.id.viewPager);
+        viewPager = view.findViewById(R.id.viewPager);
         ArrayList<Bitmap> images = p.getAllImages();
-        if(images.size() == 0) images.add(((BitmapDrawable)getResources().getDrawable(R.drawable.no_image)).getBitmap());
+        if (images.size() == 0)
+            images.add(((BitmapDrawable) getResources().getDrawable(R.drawable.no_image)).getBitmap());
         imageSliderAdapter = new ImageSliderAdapter(parent, images);
         viewPager.setAdapter(imageSliderAdapter);
 
@@ -77,7 +81,7 @@ public class ViewPost extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         //only owner can mark an item as sold
-        if(parent.getCurrentPost().getOwnerEmail().equals(parent.getCurrentUserEmail())) {
+        if (parent.getCurrentPost().getOwnerEmail().equals(parent.getCurrentUserEmail())) {
             MenuItem menuItem = menu.findItem(R.id.sold);
             menuItem.setVisible(true);
         }

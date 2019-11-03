@@ -20,14 +20,15 @@ public class LoginActivity extends AppCompatActivity {
     Database db;
     private static final int REQUEST_SIGNUP = 0;
     SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        email_input = (EditText)findViewById(R.id.input_email);
-        pwd_input = (EditText)findViewById(R.id.input_password);
-        login_btn = (Button)findViewById(R.id.btn_login);
-        signup_link = (TextView)findViewById(R.id.link_signup);
+        email_input = (EditText) findViewById(R.id.input_email);
+        pwd_input = (EditText) findViewById(R.id.input_password);
+        login_btn = (Button) findViewById(R.id.btn_login);
+        signup_link = (TextView) findViewById(R.id.link_signup);
         db = new Database(this);
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,9 +36,9 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-        sp = getApplicationContext().getSharedPreferences(getString(R.string.app_pref),MODE_PRIVATE);
-        if(sp.getBoolean("logged",false)){
-            Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
+        sp = getApplicationContext().getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+        if (sp.getBoolean("logged", false)) {
+            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(homeIntent);
         }
         signup_link.setOnClickListener(new View.OnClickListener() {
@@ -73,12 +74,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void run() {
                         String email = email_input.getText().toString();
                         String password = pwd_input.getText().toString();
-                        DbResult result = db.validUser(email,password);
+                        DbResult result = db.validUser(email, password);
                         // On complete call either onLoginSuccess or onLoginFailed
-                        if(result.getStatus()){
+                        if (result.getStatus()) {
                             onLoginSuccess(email_input.getText().toString());
-                        }
-                        else onLoginFailed(result.getMessage());
+                        } else onLoginFailed(result.getMessage());
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
                 Bundle b = data.getExtras();
@@ -105,10 +105,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess(String email) {
-        sp.edit().putString("email",email).apply();
-        sp.edit().putBoolean("logged",true).apply();
+        sp.edit().putString("email", email).apply();
+        sp.edit().putBoolean("logged", true).apply();
         login_btn.setEnabled(true);
-        Intent homeIntent = new Intent(getApplicationContext(),HomeActivity.class);
+        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(homeIntent);
     }
 

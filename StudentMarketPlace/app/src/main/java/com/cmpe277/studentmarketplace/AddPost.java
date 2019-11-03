@@ -36,16 +36,18 @@ import java.util.ArrayList;
 import static android.app.Activity.RESULT_OK;
 
 public class AddPost extends Fragment {
-    int i=0;
+    int i = 0;
     HomeActivity parent;
     ImageView targetImage;
     ArrayList<Bitmap> images = new ArrayList<Bitmap>();
     Database db;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class AddPost extends Fragment {
         final Spinner category_input = view.findViewById(R.id.category);
         final EditText name_input = view.findViewById(R.id.add_name);
         final EditText desc_input = view.findViewById(R.id.add_desc);
-        parent = (HomeActivity)getActivity();
+        parent = (HomeActivity) getActivity();
         targetImage = view.findViewById(R.id.targetImage);
         db = new Database(parent);
         buttonLoadImage.setOnClickListener(new Button.OnClickListener() {
@@ -67,7 +69,7 @@ public class AddPost extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, i);
-                }else {
+                } else {
                     // Show rationale and request permission.
                     ActivityCompat.requestPermissions(parent,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 99);
@@ -79,7 +81,7 @@ public class AddPost extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Post post = new Post(0, name_input.getText().toString(),desc_input.getText().toString(),parent.getCurrentUserEmail(),category_input.getSelectedItem().toString(),0.0, images );
+                Post post = new Post(0, name_input.getText().toString(), desc_input.getText().toString(), parent.getCurrentUserEmail(), category_input.getSelectedItem().toString(), 0.0, images);
                 DbResult result = db.createNewPost(post);
                 NavigationView navView = parent.findViewById(R.id.nav_view);
                 parent.onNavigationItemSelected(navView.getMenu().getItem(0));

@@ -8,13 +8,13 @@ import java.io.ByteArrayOutputStream;
 public class ImageConversions {
     public static Bitmap getBitmapFromBytes(byte[] bytes) {
         if (bytes != null) {
-            return BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         }
         return null;
     }
 
     public static byte[] getBytesFromBitmap(Bitmap bitmap) {
-        if (bitmap!=null) {
+        if (bitmap != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             return stream.toByteArray();

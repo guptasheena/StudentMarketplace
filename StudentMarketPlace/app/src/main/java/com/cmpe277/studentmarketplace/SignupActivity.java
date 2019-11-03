@@ -13,20 +13,21 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SignupActivity extends AppCompatActivity {
-    EditText email_input, pwd_input,name_input;
+    EditText email_input, pwd_input, name_input;
     Button signup_btn;
     TextView login_link;
     Database db;
     SharedPreferences sp;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        name_input = (EditText)findViewById(R.id.input_name);
-        email_input = (EditText)findViewById(R.id.input_email);
-        pwd_input = (EditText)findViewById(R.id.input_password);
-        signup_btn = (Button)findViewById(R.id.btn_signup);
-        login_link = (TextView)findViewById(R.id.link_login);
+        name_input = (EditText) findViewById(R.id.input_name);
+        email_input = (EditText) findViewById(R.id.input_email);
+        pwd_input = (EditText) findViewById(R.id.input_password);
+        signup_btn = (Button) findViewById(R.id.btn_signup);
+        login_link = (TextView) findViewById(R.id.link_login);
         db = new Database(this);
         signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,8 +70,8 @@ public class SignupActivity extends AppCompatActivity {
                     public void run() {
                         String email = email_input.getText().toString();
                         String password = pwd_input.getText().toString();
-                        DbResult result = db.insertNewUser(email,password);
-                        if(result.getStatus())
+                        DbResult result = db.insertNewUser(email, password);
+                        if (result.getStatus())
                             onSignupSuccess();
                         else
                             onSignupFailed(result.getMessage());
@@ -83,9 +84,9 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         signup_btn.setEnabled(true);
-        Bundle b= new Bundle();
-        b.putString("email",email_input.getText().toString());
-        Intent i = new Intent(this,LoginActivity.class);
+        Bundle b = new Bundle();
+        b.putString("email", email_input.getText().toString());
+        Intent i = new Intent(this, LoginActivity.class);
         i.putExtras(b);
         setResult(RESULT_OK, i);
         finish();

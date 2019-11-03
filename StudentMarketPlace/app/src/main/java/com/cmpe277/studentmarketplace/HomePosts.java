@@ -8,10 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 public class HomePosts extends Fragment {
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +22,7 @@ public class HomePosts extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
         HomeActivity parent = (HomeActivity) getActivity();
-        recyclerView = (RecyclerView)view.findViewById(R.id.post_list_recycler);
+        recyclerView = view.findViewById(R.id.post_list_recycler);
 
         // use a linear layout manager
         layoutManager = new GridLayoutManager(parent,3);

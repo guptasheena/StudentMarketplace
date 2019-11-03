@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,23 +29,28 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    String currentUserEmail=""; //current logged in user
-    String profileUser =""; // user whose profile needs to be viewed
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "HomeActivity";
+    String currentUserEmail = ""; //current logged in user
+    String profileUser = ""; // user whose profile needs to be viewed
     SharedPreferences sp;
-    RecyclerView homePostsRecyclerView,postedPostRecyclerView,purchasedPostRecylerView;
-    ArrayList<Post> allPostList,postedPostList,purchasedPostList;
+    RecyclerView homePostsRecyclerView, postedPostRecyclerView, purchasedPostRecylerView;
+    ArrayList<Post> allPostList, postedPostList, purchasedPostList;
     Database db;
     HomeActivity currentActivity;
-    Post currentPost; // accesed by ViewPost fragment
+    Post currentPost; // accessed by ViewPost fragment
+    EditText searchName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        sp = getApplicationContext().getSharedPreferences(getString(R.string.app_pref),MODE_PRIVATE);
-        currentUserEmail = sp.getString("email","");
+        sp = getApplicationContext().getSharedPreferences(getString(R.string.app_pref), MODE_PRIVATE);
+        currentUserEmail = sp.getString("email", "");
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        searchName = findViewById(R.id.searchName);
+
         AppBarConfiguration appBarConfiguration =
                 new AppBarConfiguration.Builder(navController.getGraph())
                         .setDrawerLayout(drawerLayout)
@@ -51,10 +58,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navView = findViewById(R.id.nav_view);
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        MenuItem m = (MenuItem)navView.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        MenuItem m = (MenuItem) navView.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                //on click of my stuff menuitem the current user profile should display
+                //on click of my stuff menu item the current user profile should display
                 setViewProfileOf(getCurrentUserEmail());
                 onNavigationItemSelected(menuItem);
                 return true;
@@ -69,7 +76,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem){
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -77,10 +84,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        return NavigationUI.navigateUp(navController,drawer) || super.onSupportNavigateUp();
+        return NavigationUI.navigateUp(navController, drawer) || super.onSupportNavigateUp();
     }
 
     @Override
@@ -102,16 +109,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.logout:
                 currentUserEmail = "";
-                sp.edit().putBoolean("logged",false).apply();
-                sp.edit().putString("email","");
-                Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
+                sp.edit().putBoolean("logged", false).apply();
+                sp.edit().putString("email", "");
+                Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(loginIntent);
                 break;
             case R.id.addpost:
-                NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
+                NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
                 NavigationUI.onNavDestinationSelected(menuItem, navController);
                 break;
-            case R.id.sold: soldMenuClick();break;
+            case R.id.sold:
+                soldMenuClick();
+                break;
 
         }
         return super.onOptionsItemSelected(menuItem);
@@ -122,26 +131,49 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         moveTaskToBack(true);
     }
 
-    public String getCurrentUserEmail(){
+    public String getCurrentUserEmail() {
         return currentUserEmail;
     }
-    public void setViewProfileOf(String email){
+
+    public void setViewProfileOf(String email) {
         profileUser = email;
     }
-    public String getViewProfileOf(){
+
+    public String getViewProfileOf() {
         return profileUser;
     }
 
-    public void setHomePostsRecyclerview(RecyclerView rv){
+    public void setHomePostsRecyclerview(RecyclerView rv) {
         homePostsRecyclerView = rv;
     }
 
-    public void  displayHomePosts(){
-        allPostList = db.GetAllPosts();
-        if(homePostsRecyclerView == null) return;
+    public void displayHomePosts() {
+
+        searchName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if (s.length() != 0) {
+                    allPostList = db.GetPostsByName(s.toString());
+                } else {
+                    allPostList = db.GetAllPosts();
+                }
+            }
+        });
+
+        if (homePostsRecyclerView == null) return;
         RecyclerView.Adapter mAdapter;
         // specify an adapter
-        if(allPostList == null || allPostList.size() == 0){
+        if (allPostList == null || allPostList.size() == 0) {
             View contextView = this.findViewById(R.id.nav_host_fragment);
             Snackbar.make(contextView, "No HomePosts to Display", Snackbar.LENGTH_LONG).show();
             return;
@@ -151,7 +183,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 int pos = homePostsRecyclerView.indexOfChild(v);
                 currentPost = allPostList.get(pos);
-                NavController navController = Navigation.findNavController(currentActivity,R.id.nav_host_fragment);
+                NavController navController = Navigation.findNavController(currentActivity, R.id.nav_host_fragment);
                 navController.navigate(R.id.viewpost);
             }
         };
@@ -159,15 +191,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         homePostsRecyclerView.setAdapter(mAdapter);
     }
 
-    public void setPostedRecyclerview(RecyclerView rv){
+    public void setPostedRecyclerview(RecyclerView rv) {
         postedPostRecyclerView = rv;
     }
 
-    public void  displayPostedPosts(){
-        if(postedPostRecyclerView == null) return;
+    public void displayPostedPosts() {
+        if (postedPostRecyclerView == null) return;
         RecyclerView.Adapter mAdapter;
         // specify an adapter
-        if(postedPostList == null || postedPostList.size() == 0){
+        if (postedPostList == null || postedPostList.size() == 0) {
             View contextView = this.findViewById(R.id.nav_host_fragment);
             Snackbar.make(contextView, "No Posted Posts to Display", Snackbar.LENGTH_LONG).show();
             return;
@@ -178,7 +210,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 int pos = postedPostRecyclerView.indexOfChild(v);
                 currentPost = postedPostList.get(pos);
-                NavController navController = Navigation.findNavController(currentActivity,R.id.nav_host_fragment);
+                NavController navController = Navigation.findNavController(currentActivity, R.id.nav_host_fragment);
                 navController.navigate(R.id.viewpost);
             }
         };
@@ -187,15 +219,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         postedPostRecyclerView.setAdapter(mAdapter);
     }
 
-    public void setPurchasedRecyclerview(RecyclerView rv){
+    public void setPurchasedRecyclerview(RecyclerView rv) {
         purchasedPostRecylerView = rv;
     }
 
-    public void  displayPurchasedPosts(){
-        if(purchasedPostRecylerView== null) return;
+    public void displayPurchasedPosts() {
+        if (purchasedPostRecylerView == null) return;
         RecyclerView.Adapter mAdapter;
         // specify an adapter
-        if(purchasedPostList == null || purchasedPostList.size() == 0){
+        if (purchasedPostList == null || purchasedPostList.size() == 0) {
             View contextView = this.findViewById(R.id.nav_host_fragment);
             Snackbar.make(contextView, "No Purchased Posts to Display", Snackbar.LENGTH_LONG).show();
             return;
@@ -205,21 +237,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 int pos = purchasedPostRecylerView.indexOfChild(v);
                 currentPost = purchasedPostList.get(pos);
-                NavController navController = Navigation.findNavController(currentActivity,R.id.nav_host_fragment);
+                NavController navController = Navigation.findNavController(currentActivity, R.id.nav_host_fragment);
                 navController.navigate(R.id.viewpost);
             }
         };
-        mAdapter = new MyAdapter(purchasedPostList,clickListener);
+        mAdapter = new MyAdapter(purchasedPostList, clickListener);
         purchasedPostRecylerView.setAdapter(mAdapter);
     }
 
-    public Post getCurrentPost(){
+    public Post getCurrentPost() {
         return currentPost;
     }
 
-    public void soldMenuClick(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity,R.style.AppTheme_Dark_Dialog);//getActivity () for fragment?
-        builder.setMessage("Are you sure you want to mark "+getCurrentPost().getName()+" as sold?")
+    public void soldMenuClick() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity, R.style.AppTheme_Dark_Dialog);//getActivity () for fragment?
+        builder.setMessage("Are you sure you want to mark " + getCurrentPost().getName() + " as sold?")
                 .setTitle("Mark as sold");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -236,24 +268,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         dialog.show();
     }
 
-    public void markSoldDialog(){
+    public void markSoldDialog() {
         final EditText input = new EditText(currentActivity);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(lp);
-        AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity,R.style.AppTheme_Dark_Dialog);//getActivity () for fragment?
+        AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity, R.style.AppTheme_Dark_Dialog);//getActivity () for fragment?
         builder.setMessage("Enter the email of the customer:")
-                .setTitle("Mark "+getCurrentPost().getName()+" as sold").setView(input);
+                .setTitle("Mark " + getCurrentPost().getName() + " as sold").setView(input);
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 String email = input.getText().toString();
-                DbResult result = db.createPurchaseRecord(getCurrentPost().getItemId(),email);
-                if(result.getStatus()) {
+                DbResult result = db.createPurchaseRecord(getCurrentPost().getItemId(), email);
+                if (result.getStatus()) {
                     Toast.makeText(currentActivity, "Item marked as sold to " + email, Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(currentActivity,result.getMessage(),Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(currentActivity, result.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });

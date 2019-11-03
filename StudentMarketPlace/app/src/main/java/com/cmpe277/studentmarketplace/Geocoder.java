@@ -8,24 +8,26 @@ import java.util.List;
 
 public class Geocoder {
     private HomeActivity currentContext;
-    public Geocoder(HomeActivity h){
+
+    public Geocoder(HomeActivity h) {
         currentContext = h;
     }
-    public LatLng getLatLong(String addr12, String city, String state, int zip, String country){
-        String strAddress = addr12+", "+city+", "+state+" "+zip+", "+country;
+
+    public LatLng getLatLong(String addr12, String city, String state, int zip, String country) {
+        String strAddress = addr12 + ", " + city + ", " + state + " " + zip + ", " + country;
         android.location.Geocoder coder = new android.location.Geocoder(currentContext);
         List<Address> address;
 
 
         try {
-            address = coder.getFromLocationName(strAddress,5);
-            if (address==null) {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
                 return null;
             }
-            Address location=address.get(0);
+            Address location = address.get(0);
 
             return new LatLng(location.getLatitude(), location.getLongitude());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
