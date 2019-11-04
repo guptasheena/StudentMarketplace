@@ -3,11 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/searchName"
+    <fragment
+        android:id="@+id/filter_fragment"
+        android:name="com.cmpe277.studentmarketplace.HomeFilters"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search by item name" />
+        android:layout_height="56dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/post_list_recycler"

@@ -16,9 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HomePosts extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    EditText searchName;
     HomeActivity parent;
-    Database db;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,29 +28,7 @@ public class HomePosts extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
         parent = (HomeActivity) getActivity();
-        db = new Database(parent);
-        searchName = view.findViewById(R.id.searchName);
-        searchName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    parent.allPostList = db.GetPostsByName(s.toString());
-                } else {
-                    parent.allPostList = db.GetAllPosts();
-                }
-                parent.displayHomePosts();
-            }
-        });
 
         recyclerView = view.findViewById(R.id.post_list_recycler);
 

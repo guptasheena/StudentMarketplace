@@ -35,6 +35,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         mClickListener = callback;
     }
 
+    public void setData(ArrayList<Post> data){
+        mDataset = data;
+        notifyDataSetChanged();
+        // where this.data is the recyclerView's dataset you are
+        // setting in adapter=new Adapter(this,db.getData());
+    }
+
     // Create new views (invoked by the layout manager)
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
