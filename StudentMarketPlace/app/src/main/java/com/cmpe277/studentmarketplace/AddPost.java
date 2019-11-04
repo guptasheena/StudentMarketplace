@@ -84,6 +84,7 @@ public class AddPost extends Fragment {
                 Post post = new Post(0, name_input.getText().toString(), desc_input.getText().toString(), parent.getCurrentUserEmail(), category_input.getSelectedItem().toString(), 0.0, images);
                 DbResult result = db.createNewPost(post);
                 NavigationView navView = parent.findViewById(R.id.nav_view);
+                parent.allPostList = db.GetAllPosts(); //to refresh home on adding new
                 parent.onNavigationItemSelected(navView.getMenu().getItem(0));
             }
         });

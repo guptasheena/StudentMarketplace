@@ -39,7 +39,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     Database db;
     HomeActivity currentActivity;
     Post currentPost; // accessed by ViewPost fragment
-    EditText searchName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         currentUserEmail = sp.getString("email", "");
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        searchName = findViewById(R.id.searchName);
 
         AppBarConfiguration appBarConfiguration =
                 new AppBarConfiguration.Builder(navController.getGraph())
@@ -148,28 +146,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayHomePosts() {
-
-        searchName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
-                if (s.length() != 0) {
-                    allPostList = db.GetPostsByName(s.toString());
-                } else {
-                    allPostList = db.GetAllPosts();
-                }
-            }
-        });
-
         if (homePostsRecyclerView == null) return;
         RecyclerView.Adapter mAdapter;
         // specify an adapter

@@ -10,7 +10,7 @@
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="566dp"
+        android:layout_height="570dp"
         tools:context=".HomeActivity">
 
         <fragment
@@ -18,7 +18,6 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="60dp"
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph" />
 
@@ -30,18 +29,6 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:menu="@menu/nav_menu" />
-
-
-        <EditText
-            android:id="@+id/searchName"
-            android:layout_width="wrap_content"
-            android:layout_height="10dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="-500dp"
-            android:ems="10"
-            android:hint="Search by item name"
-            />
-
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </LinearLayout>
