@@ -7,8 +7,18 @@
     <string name="app_pref">Marketplace_Preferences</string>
     <string-array name="categories">
         <item>Furniture</item>
-        <item>Books</item>
-        <item>Vehicles</item>
+        <item>Household</item>
+        <item>Appliances</item>
+        <item>Tools</item>
+        <item>Garden</item>
+        <item>Book</item>
+        <item>Vehicle</item>
+        <item>Clothes</item>
+        <item>Shoes</item>
+        <item>Jewlery</item>
+        <item>Bags</item>
+        <item>Electronics</item>
+        <item>Games</item>
     </string-array>
     <string name="goole_api_key">add your google api key here</string>
 </resources>
