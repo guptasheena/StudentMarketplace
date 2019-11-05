@@ -46,23 +46,14 @@ public class HomeFilters extends Fragment {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
-                if (s.length() != 0)
+                if (s.length() != 0) {
+                    searchCategory.setSelection(0);
                     m.setData(db.GetPostsByName(s.toString()));
+                }
                 else
                     m.setData(db.GetAllPosts());
             }
         });
-
-
-
-//        if  (category != "Select Category") {
-//            MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
-//            m.setData(db.GetPostsByCategory(category));
-//        }
-//        else
-//            m.setData(db.GetAllPosts());
-
-
 
         searchCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -70,11 +61,13 @@ public class HomeFilters extends Fragment {
                 // your code here
                 String category = searchCategory.getSelectedItem().toString();
                 MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
-                if (!category.equals("Select Category"))
+
+                if (searchCategory.getSelectedItemPosition() != 0) {
+                    searchName.setText(null);
                     m.setData(db.GetPostsByCategory(category));
+                }
                 else
                     m.setData(db.GetAllPosts());
-
             }
 
             @Override
@@ -84,27 +77,6 @@ public class HomeFilters extends Fragment {
 
         });
 
-
-//        searchCategory.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start,
-//                                          int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start,
-//                                      int before, int count) {
-//                MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
-//                if (s.length() != 0)
-//                    m.setData(db.GetPostsByCategory(s.toString()));
-//                else
-//                    m.setData(db.GetAllPosts());
-//            }
-//        });
         return view;
     }
 }

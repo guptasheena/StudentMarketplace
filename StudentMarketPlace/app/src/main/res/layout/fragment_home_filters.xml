@@ -9,13 +9,6 @@
         android:layout_height="80dp"
         android:hint="Search by item name" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/searchCategory"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:hint="Search by Category"-->
-<!--        />-->
-
     <Spinner
         android:id="@+id/searchCategory"
         android:layout_width="match_parent"
