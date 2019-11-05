@@ -10,4 +10,5 @@
         <item>Books</item>
         <item>Vehicles</item>
     </string-array>
+    <string name="goole_api_key">add your google api key here</string>
 </resources>

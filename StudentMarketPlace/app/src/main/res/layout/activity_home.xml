@@ -10,7 +10,7 @@
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="570dp"
+        android:layout_height="595dp"
         tools:context=".HomeActivity">
 
         <fragment

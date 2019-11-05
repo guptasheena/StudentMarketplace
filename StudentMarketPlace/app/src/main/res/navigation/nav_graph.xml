@@ -41,6 +41,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/direction"
+        android:name="com.cmpe277.studentmarketplace.map"
+        android:label="Directions"
+        tools:layout="@layout/fragment_map" >
+    </fragment>
+
+    <fragment
         android:id="@+id/other_profile"
         android:name="com.cmpe277.studentmarketplace.Profile"
         android:label="View profile of other user"
