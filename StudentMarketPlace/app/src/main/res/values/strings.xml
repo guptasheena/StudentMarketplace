@@ -6,6 +6,7 @@
     <string name="enter_pwd">Please enter the password</string>
     <string name="app_pref">Marketplace_Preferences</string>
     <string-array name="categories">
+        <item >Select Category</item>
         <item>Furniture</item>
         <item>Household</item>
         <item>Appliances</item>

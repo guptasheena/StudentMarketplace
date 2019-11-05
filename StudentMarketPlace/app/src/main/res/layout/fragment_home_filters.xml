@@ -9,11 +9,21 @@
         android:layout_height="80dp"
         android:hint="Search by item name" />
 
-    <EditText
+<!--    <EditText-->
+<!--        android:id="@+id/searchCategory"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:hint="Search by Category"-->
+<!--        />-->
+
+    <Spinner
         android:id="@+id/searchCategory"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="Search by Category"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:entries="@array/categories"
+        android:spinnerMode="dropdown"
+        android:theme="@android:style/Widget.DeviceDefault.ListView.DropDown"
         />
 
 </LinearLayout>

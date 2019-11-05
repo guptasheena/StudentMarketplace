@@ -7,14 +7,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 
 public class HomeFilters extends Fragment {
     private static final String TAG = "HomeFilters";
     HomeActivity parent;
     Database db;
-    EditText searchName, searchCategory;
+    EditText searchName;
+    Spinner searchCategory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,26 +53,58 @@ public class HomeFilters extends Fragment {
             }
         });
 
-        searchCategory.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
 
+//        if  (category != "Select Category") {
+//            MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
+//            m.setData(db.GetPostsByCategory(category));
+//        }
+//        else
+//            m.setData(db.GetAllPosts());
+
+
+
+        searchCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start,
-                                      int before, int count) {
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                String category = searchCategory.getSelectedItem().toString();
                 MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
-                if (s.length() != 0)
-                    m.setData(db.GetPostsByCategory(s.toString()));
+                if (!category.equals("Select Category"))
+                    m.setData(db.GetPostsByCategory(category));
                 else
                     m.setData(db.GetAllPosts());
+
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
         });
+
+
+//        searchCategory.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start,
+//                                          int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start,
+//                                      int before, int count) {
+//                MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
+//                if (s.length() != 0)
+//                    m.setData(db.GetPostsByCategory(s.toString()));
+//                else
+//                    m.setData(db.GetAllPosts());
+//            }
+//        });
         return view;
     }
 }
