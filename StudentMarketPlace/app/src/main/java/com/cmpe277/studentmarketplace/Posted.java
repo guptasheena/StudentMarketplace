@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +25,7 @@ public class Posted extends Fragment {
         View view = inflater.inflate(R.layout.fragment_posted, container, false);
         // Inflate the layout for this fragment
         HomeActivity parent = (HomeActivity) getActivity();
-        recyclerView = (RecyclerView) view.findViewById(R.id.posted_list_recycler);
+        recyclerView = view.findViewById(R.id.posted_list_recycler);
 
         // use a linear layout manager
         layoutManager = new GridLayoutManager(parent, 3);

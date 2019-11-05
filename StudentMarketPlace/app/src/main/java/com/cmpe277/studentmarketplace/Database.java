@@ -158,28 +158,44 @@ public class Database extends SQLiteOpenHelper {
         return b;
     }
 
-    public ArrayList<Post> GetPostedPosts() {
+    public ArrayList<Post> GetPostedPosts(String user) {
 
         SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM Item WHERE id NOT IN(SELECT itemId FROM PurchaseInfo) AND posted_by = \"" + user + "\"";
+        Log.d(TAG, "GetPostedPosts: " + query);
+        Cursor cursor = db.rawQuery(query, null);
         ArrayList<Post> postsList = new ArrayList<>();
-        Post p = new Post(3, "Post3", "This is post desc3", "User3@sjsu.com", "vehicle", 0.0, null);
-        postsList.add(p);
-        p = new Post(4, "Post4", "This is post desc4", "User4@sjsu.com", "vehicle", 0.0, null);
-        postsList.add(p);
+        while (cursor.moveToNext()) {
+            int itemId = cursor.getInt(cursor.getColumnIndex("id"));
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String desc = cursor.getString(cursor.getColumnIndex("description"));
+            String owner = cursor.getString(cursor.getColumnIndex("posted_by"));
+            String category = cursor.getString(cursor.getColumnIndex("category"));
+            double price = cursor.getDouble(cursor.getColumnIndex("price"));
+
+            Post p = new Post(itemId, name, desc, owner, category, price, getAllImagesByItemId(itemId));
+            postsList.add(p);
+        }
         return postsList;
     }
 
-    public ArrayList<Post> GetPurchasedPosts() {
+    public ArrayList<Post> GetPurchasedPosts(String user) {
         SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM Item INNER JOIN PurchaseInfo ON Item.id = PurchaseInfo.itemId AND purchased_by = \"" + user + "\"";
+        Log.d(TAG, "GetPostedPosts: " + query);
+        Cursor cursor = db.rawQuery(query, null);
         ArrayList<Post> postsList = new ArrayList<>();
-        Post p = new Post(5, "Post5", "This is post desc5", "User5@sjsu.edu", "furniture", 0.0, null);
-        postsList.add(p);
-        p = new Post(6, "Post6", "This is post desc6", "User6@sjsu.com", "furniture", 0.0, null);
-        postsList.add(p);
-        p = new Post(7, "Post7", "This is post desc7", "User7@sjsu.com", "furniture", 0.0, null);
-        postsList.add(p);
-        p = new Post(8, "Post8", "This is post desc8", "User8@sjsu.com", "book", 0.0, null);
-        postsList.add(p);
+        while (cursor.moveToNext()) {
+            int itemId = cursor.getInt(cursor.getColumnIndex("id"));
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String desc = cursor.getString(cursor.getColumnIndex("description"));
+            String owner = cursor.getString(cursor.getColumnIndex("posted_by"));
+            String category = cursor.getString(cursor.getColumnIndex("category"));
+            double price = cursor.getDouble(cursor.getColumnIndex("price"));
+
+            Post p = new Post(itemId, name, desc, owner, category, price, getAllImagesByItemId(itemId));
+            postsList.add(p);
+        }
         return postsList;
     }
 

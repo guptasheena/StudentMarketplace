@@ -56,7 +56,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navView = findViewById(R.id.nav_view);
         NavigationUI.setupWithNavController(navView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        MenuItem m = (MenuItem) navView.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        MenuItem m = navView.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 //on click of my stuff menu item the current user profile should display
@@ -68,15 +68,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         db = new Database(this);
         //First load will have all the posts
         allPostList = db.GetAllPosts();
-        postedPostList = db.GetPostedPosts();
-        purchasedPostList = db.GetPurchasedPosts();
+        postedPostList = db.GetPostedPosts(currentUserEmail);
+        purchasedPostList = db.GetPurchasedPosts(currentUserEmail);
         currentActivity = this;
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return NavigationUI.onNavDestinationSelected(menuItem, navController);
     }
@@ -84,7 +84,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         return NavigationUI.navigateUp(navController, drawer) || super.onSupportNavigateUp();
     }
 
