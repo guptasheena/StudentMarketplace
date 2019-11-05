@@ -126,6 +126,27 @@ public class Database extends SQLiteOpenHelper {
         return postsList;
     }
 
+    // Get Posts by Category
+    public ArrayList<Post> GetPostsByCategory(String categoryName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM Item WHERE id NOT IN(SELECT itemId FROM PurchaseInfo) AND category LIKE \"%" + categoryName + "%\"";
+        Log.d(TAG, "GetPostsByCategory: " + query);
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<Post> postsList = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            int itemId = cursor.getInt(cursor.getColumnIndex("id"));
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String desc = cursor.getString(cursor.getColumnIndex("description"));
+            String owner = cursor.getString(cursor.getColumnIndex("posted_by"));
+            String category = cursor.getString(cursor.getColumnIndex("category"));
+            double price = cursor.getDouble(cursor.getColumnIndex("price"));
+
+            Post p = new Post(itemId, name, desc, owner, category, price, getAllImagesByItemId(itemId));
+            postsList.add(p);
+        }
+        return postsList;
+    }
+
     public ArrayList<Bitmap> getAllImagesByItemId(int itemId) {
         ArrayList<Bitmap> b = new ArrayList<Bitmap>();
         SQLiteDatabase db = this.getReadableDatabase();

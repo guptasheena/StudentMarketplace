@@ -7,7 +7,7 @@
         android:id="@+id/filter_fragment"
         android:name="com.cmpe277.studentmarketplace.HomeFilters"
         android:layout_width="match_parent"
-        android:layout_height="56dp" />
+        android:layout_height="150dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/post_list_recycler"
