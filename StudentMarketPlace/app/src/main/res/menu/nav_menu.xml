@@ -7,7 +7,7 @@
     <item
         android:icon="@drawable/profile_icon"
         android:id="@+id/profile"
-        android:title="My Stuff" />
+        android:title="My Account" />
     <item
         android:icon="@drawable/add_new"
         android:id="@+id/addpost"
