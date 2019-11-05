@@ -1,18 +1,10 @@
 package com.cmpe277.studentmarketplace;
 
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +13,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 /**
@@ -30,6 +25,7 @@ public class map extends Fragment implements OnMapReadyCallback {
     SupportMapFragment mapFragment;
     GoogleMap mMap;
     HomeActivity parent;
+    Database db;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +36,7 @@ public class map extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         parent = (HomeActivity) getActivity();
+        db = new Database(parent);
         mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         return view;
@@ -48,6 +45,16 @@ public class map extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        Geocoder g = new Geocoder(parent);
+        String strAddress = db.getUserAddress(parent.getCurrentPost().getOwnerEmail());
+        LatLng ownerLoc= g.getLatLong(strAddress);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ownerLoc));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+        markerOptions.position(ownerLoc);
+        markerOptions.title("Destination: "+strAddress);
+        mMap.addMarker(markerOptions);
         mapFragment.onResume();
     }
 }

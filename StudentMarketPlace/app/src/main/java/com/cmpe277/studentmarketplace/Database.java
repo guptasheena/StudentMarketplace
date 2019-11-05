@@ -42,7 +42,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     // Adding new User Details
-    public DbResult insertNewUser(String email, String password) {
+    public DbResult insertNewUser(String email, String password, String address, String phoneNum, String fname, String lname) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT password FROM User where email = '" + email + "';";
         Cursor cursor = db.rawQuery(query, null);
@@ -53,6 +53,10 @@ public class Database extends SQLiteOpenHelper {
             ContentValues cValues = new ContentValues();
             cValues.put("email", email);
             cValues.put("password", password);
+            cValues.put("first_name", fname);
+            cValues.put("last_name", lname);
+            cValues.put("address", address);
+            cValues.put("phone", phoneNum);
             // Insert the new row, returning the primary key value of the new row
             long newRowId = db.insert("User", null, cValues);
             return new DbResult("SignUp Success", true);
@@ -237,5 +241,16 @@ public class Database extends SQLiteOpenHelper {
         }
 
         return new DbResult("New post added", false);
+    }
+
+    public String getUserAddress(String email){
+        String strAddress = "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT address FROM User where email = '" + email + "';";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToNext()) {
+            strAddress = cursor.getString(cursor.getColumnIndex("address"));
+        }
+        return strAddress;
     }
 }

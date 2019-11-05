@@ -13,11 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -26,6 +29,7 @@ public class ViewPost extends Fragment {
     //int images[] = {R.drawable.ic_launcher_background, R.drawable.no_image, R.drawable.home_icon, R.drawable.logo};
     ImageSliderAdapter imageSliderAdapter;
     HomeActivity parent;
+    Database db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class ViewPost extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_viewpost, container, false);
         parent = (HomeActivity) getActivity();
+        db = new Database(parent);
         TextView t = view.findViewById(R.id.view_post_text);
         TextView t2 = view.findViewById(R.id.post_owner);
         final Post p = parent.getCurrentPost();
@@ -59,8 +64,27 @@ public class ViewPost extends Fragment {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavController navController = Navigation.findNavController(parent, R.id.nav_host_fragment);
-                navController.navigate(R.id.direction);
+                Geocoder g = new Geocoder(parent);
+                String errMsg = "";
+                String strAddress = db.getUserAddress(parent.getCurrentPost().getOwnerEmail());
+                LatLng ownerLoc = null;
+                if (strAddress == "" || strAddress == null){
+                    errMsg = "Post owner doesn't have an address!";
+                }
+                else {
+                    ownerLoc = g.getLatLong(strAddress);
+                    if (ownerLoc == null) {
+                        errMsg = "Post owner could not be located!";
+                    }
+                    else {
+                        NavController navController = Navigation.findNavController(parent, R.id.nav_host_fragment);
+                        navController.navigate(R.id.direction);
+                    }
+                }
+
+                if(errMsg != ""){
+                    Toast.makeText(parent,errMsg,Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

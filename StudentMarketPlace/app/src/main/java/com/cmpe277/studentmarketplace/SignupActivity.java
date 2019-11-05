@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SignupActivity extends AppCompatActivity {
-    EditText email_input, pwd_input, fname_input;
+    EditText email_input, pwd_input, fname_input, lname_input, strAddress, phone;
     Button signup_btn;
     TextView login_link;
     Database db;
@@ -24,6 +24,9 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         fname_input = (EditText) findViewById(R.id.input_fname);
+        lname_input = (EditText) findViewById(R.id.input_lname);
+        strAddress = (EditText) findViewById(R.id.input_addr);
+        phone = (EditText) findViewById(R.id.input_phone);
         email_input = (EditText) findViewById(R.id.input_email);
         pwd_input = (EditText) findViewById(R.id.input_password);
         signup_btn = (Button) findViewById(R.id.btn_signup);
@@ -70,7 +73,11 @@ public class SignupActivity extends AppCompatActivity {
                     public void run() {
                         String email = email_input.getText().toString();
                         String password = pwd_input.getText().toString();
-                        DbResult result = db.insertNewUser(email, password);
+                        String address = strAddress.getText().toString();
+                        String phoneNum = phone.getText().toString();
+                        String fname = fname_input.getText().toString();
+                        String lname = lname_input.getText().toString();
+                        DbResult result = db.insertNewUser(email, password, address, phoneNum,fname,lname);
                         if (result.getStatus())
                             onSignupSuccess();
                         else
@@ -102,6 +109,7 @@ public class SignupActivity extends AppCompatActivity {
         boolean valid = true;
 
         String fname = fname_input.getText().toString();
+        String lname = lname_input.getText().toString();
         String email = email_input.getText().toString();
         String password = pwd_input.getText().toString();
 
@@ -110,6 +118,13 @@ public class SignupActivity extends AppCompatActivity {
             valid = false;
         } else {
             fname_input.setError(null);
+        }
+
+        if (lname.isEmpty() || fname.length() < 3) {
+            lname_input.setError("at least 3 characters");
+            valid = false;
+        } else {
+            lname_input.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
