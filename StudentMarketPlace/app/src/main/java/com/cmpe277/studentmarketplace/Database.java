@@ -108,7 +108,7 @@ public class Database extends SQLiteOpenHelper {
     // Get Posts by Name
     public ArrayList<Post> GetPostsByName(String itemName) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM Item where id not in(SELECT itemId from PurchaseInfo) and name = \"" + itemName + "\"";
+        String query = "SELECT * FROM Item WHERE id NOT IN(SELECT itemId FROM PurchaseInfo) AND name LIKE \"%" + itemName + "%\"";
         Log.d(TAG, "GetPostsByName: " + query);
         Cursor cursor = db.rawQuery(query, null);
         ArrayList<Post> postsList = new ArrayList<>();

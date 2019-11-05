@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 public class HomeFilters extends Fragment {
     HomeActivity parent;
@@ -38,10 +36,11 @@ public class HomeFilters extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                if (s.length() != 0) {
-                    MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
+                MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
+                if (s.length() != 0)
                     m.setData(db.GetPostsByName(s.toString()));
-                }
+                else
+                    m.setData(db.GetAllPosts());
             }
         });
         return view;
