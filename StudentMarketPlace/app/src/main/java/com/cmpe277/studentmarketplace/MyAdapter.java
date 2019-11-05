@@ -35,8 +35,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         mClickListener = callback;
     }
 
-    public void setData(ArrayList<Post> data){
+    public void setData(ArrayList<Post> data, View.OnClickListener callback){
         mDataset = data;
+        mClickListener = callback;
         notifyDataSetChanged();
         // where this.data is the recyclerView's dataset you are
         // setting in adapter=new Adapter(this,db.getData());

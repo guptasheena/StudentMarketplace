@@ -13,6 +13,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+import java.util.ArrayList;
 
 public class HomeFilters extends Fragment {
     private static final String TAG = "HomeFilters";
@@ -45,38 +49,75 @@ public class HomeFilters extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
+                MyAdapter m = (MyAdapter) parent.homePostsRecyclerView.getAdapter();
                 if (s.length() != 0) {
                     searchCategory.setSelection(0);
-                    m.setData(db.GetPostsByName(s.toString()));
+                    final ArrayList<Post> filteredPosts = db.GetPostsByName(s.toString());
+                    View.OnClickListener clickListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int pos = parent.homePostsRecyclerView.indexOfChild(v);
+                            parent.setCurrentPost(filteredPosts.get(pos));
+                            NavController navController = Navigation.findNavController(parent, R.id.nav_host_fragment);
+                            navController.navigate(R.id.viewpost);
+                        }
+                    };
+                    m.setData(filteredPosts, clickListener);
+                } else {
+                    View.OnClickListener clickListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int pos = parent.homePostsRecyclerView.indexOfChild(v);
+                            parent.setCurrentPost(parent.allPostList.get(pos));
+                            NavController navController = Navigation.findNavController(parent, R.id.nav_host_fragment);
+                            navController.navigate(R.id.viewpost);
+                        }
+                    };
+                    m.setData(parent.allPostList, clickListener);
                 }
-                else
-                    m.setData(db.GetAllPosts());
             }
         });
+
 
         searchCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // your code here
                 String category = searchCategory.getSelectedItem().toString();
-                MyAdapter m = (MyAdapter)parent.homePostsRecyclerView.getAdapter();
+                MyAdapter m = (MyAdapter) parent.homePostsRecyclerView.getAdapter();
 
                 if (searchCategory.getSelectedItemPosition() != 0) {
                     searchName.setText(null);
-                    m.setData(db.GetPostsByCategory(category));
+                    final ArrayList<Post> filteredPosts = db.GetPostsByCategory(category);
+                    View.OnClickListener clickListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int pos = parent.homePostsRecyclerView.indexOfChild(v);
+                            parent.setCurrentPost(filteredPosts.get(pos));
+                            NavController navController = Navigation.findNavController(parent, R.id.nav_host_fragment);
+                            navController.navigate(R.id.viewpost);
+                        }
+                    };
+                    m.setData(filteredPosts, clickListener);
+                } else {
+                    View.OnClickListener clickListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int pos = parent.homePostsRecyclerView.indexOfChild(v);
+                            parent.setCurrentPost(parent.allPostList.get(pos));
+                            NavController navController = Navigation.findNavController(parent, R.id.nav_host_fragment);
+                            navController.navigate(R.id.viewpost);
+                        }
+                    };
+                    m.setData(db.GetAllPosts(), clickListener);
                 }
-                else
-                    m.setData(db.GetAllPosts());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
                 // your code here
             }
-
         });
-
         return view;
     }
 }

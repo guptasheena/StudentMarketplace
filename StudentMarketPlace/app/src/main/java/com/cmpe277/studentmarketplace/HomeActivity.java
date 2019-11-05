@@ -225,6 +225,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return currentPost;
     }
 
+    public void setCurrentPost(Post p) {
+        currentPost = p;
+    }
+
     public void soldMenuClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity, R.style.AppTheme_Dark_Dialog);//getActivity () for fragment?
         builder.setMessage("Are you sure you want to mark " + getCurrentPost().getName() + " as sold?")
