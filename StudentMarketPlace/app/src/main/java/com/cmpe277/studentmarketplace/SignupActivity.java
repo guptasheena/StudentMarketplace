@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SignupActivity extends AppCompatActivity {
-    EditText email_input, pwd_input, name_input;
+    EditText email_input, pwd_input, fname_input;
     Button signup_btn;
     TextView login_link;
     Database db;
@@ -23,7 +23,7 @@ public class SignupActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        name_input = (EditText) findViewById(R.id.input_name);
+        fname_input = (EditText) findViewById(R.id.input_fname);
         email_input = (EditText) findViewById(R.id.input_email);
         pwd_input = (EditText) findViewById(R.id.input_password);
         signup_btn = (Button) findViewById(R.id.btn_signup);
@@ -61,7 +61,7 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = name_input.getText().toString();
+        String name = fname_input.getText().toString();
 
         // TODO: Implement your own signup logic here.
 
@@ -101,15 +101,15 @@ public class SignupActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String name = name_input.getText().toString();
+        String fname = fname_input.getText().toString();
         String email = email_input.getText().toString();
         String password = pwd_input.getText().toString();
 
-        if (name.isEmpty() || name.length() < 3) {
-            name_input.setError("at least 3 characters");
+        if (fname.isEmpty() || fname.length() < 3) {
+            fname_input.setError("at least 3 characters");
             valid = false;
         } else {
-            name_input.setError(null);
+            fname_input.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

@@ -13,8 +13,8 @@ public class Geocoder {
         currentContext = h;
     }
 
-    public LatLng getLatLong(String addr12, String city, String state, int zip, String country) {
-        String strAddress = addr12 + ", " + city + ", " + state + " " + zip + ", " + country;
+    public LatLng getLatLong(String strAddress) {
+        //String strAddress = addr12 + ", " + city + ", " + state + " " + zip + ", " + country;
         android.location.Geocoder coder = new android.location.Geocoder(currentContext);
         List<Address> address;
 
