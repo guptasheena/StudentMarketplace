@@ -44,13 +44,18 @@ public class ViewPost extends Fragment {
         View view = inflater.inflate(R.layout.fragment_viewpost, container, false);
         parent = (HomeActivity) getActivity();
         db = new Database(parent);
-        TextView t = view.findViewById(R.id.view_post_text);
-        TextView t2 = view.findViewById(R.id.post_owner);
+        TextView heading = view.findViewById(R.id.view_post_text);
+        TextView posted_by = view.findViewById(R.id.post_owner);
+        TextView addr = view.findViewById(R.id.strAddress);
+        TextView desc = view.findViewById(R.id.description);
+        TextView price = view.findViewById(R.id.price);
         final Post p = parent.getCurrentPost();
-        t.setText("This is to display info for Post: " + p.getName());
-        t2.setText("Posted By: " + p.getOwnerEmail());
-        Button b = (Button) view.findViewById(R.id.view_owner);
-        b.setOnClickListener(new View.OnClickListener() {
+        heading.setText(p.getName());
+        addr.setText(db.getUserAddress(p.getOwnerEmail()));
+        posted_by.setText(db.getUserName(p.getOwnerEmail()));
+        desc.setText(p.getDescription());
+        price.setText("$ "+Double.toString(p.getPrice()));
+        posted_by.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 parent.setViewProfileOf(p.getOwnerEmail()); // view profile of post owner
