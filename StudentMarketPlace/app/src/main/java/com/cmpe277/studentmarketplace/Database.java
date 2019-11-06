@@ -82,6 +82,39 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
+    // Get User Details by Email
+    public User GetUserDetails(String input_email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM User where email = '" + input_email + "';";
+        Log.d(TAG, "GetUser: " + query);
+        Cursor cursor = db.rawQuery(query, null);
+        User p = new User();
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            String first_name = cursor.getString(cursor.getColumnIndex("first_name"));
+            String last_name = cursor.getString(cursor.getColumnIndex("last_name"));
+            String address = cursor.getString(cursor.getColumnIndex("address"));
+            String password = cursor.getString(cursor.getColumnIndex("password"));
+            String phone = cursor.getString(cursor.getColumnIndex("phone"));
+            String email = cursor.getString(cursor.getColumnIndex("email"));
+
+
+            User u = new User(id, first_name, last_name, email, password, address, phone);
+            p=u;
+        }
+        return p;
+    }
+
+    // Update User Profile
+    public void UpdateUser(String email, String first_name, String last_name, String password, String address, String phone) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "UPDATE User SET first_name = '" + first_name + "', last_name = '" + last_name + "', " +
+                "address = '" + address + "', password = '" + password + "', phone = '" + phone + "'" +
+                " WHERE email = '" + email + "';";
+        Log.d(TAG, "Update User: " + query);
+        db.execSQL(query);
+    }
+
     // Delete a user
     public void RemoveUser(String email) {
         SQLiteDatabase db = this.getWritableDatabase();
