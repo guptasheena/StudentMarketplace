@@ -109,6 +109,11 @@ public class HomeFilters extends Fragment {
                             navController.navigate(R.id.viewpost);
                         }
                     };
+                    if (filteredPosts == null || filteredPosts.size() == 0) {
+                        View contextView = parent.findViewById(R.id.nav_host_fragment);
+                        Snackbar.make(contextView, "No Posts qualify the filters. Please try changing the filters.", Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
                     m.setData(filteredPosts, clickListener);
                 } else {
                     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -120,7 +125,12 @@ public class HomeFilters extends Fragment {
                             navController.navigate(R.id.viewpost);
                         }
                     };
-                    m.setData(db.GetAllPosts(), clickListener);
+                    if (parent.allPostList == null || parent.allPostList.size() == 0) {
+                        View contextView = parent.findViewById(R.id.nav_host_fragment);
+                        Snackbar.make(contextView, "No Posts to display.", Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
+                    m.setData(parent.allPostList, clickListener);
                 }
             }
 
