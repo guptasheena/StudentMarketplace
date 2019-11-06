@@ -3,18 +3,18 @@ package com.cmpe277.studentmarketplace;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -62,6 +62,12 @@ public class HomeFilters extends Fragment {
                             navController.navigate(R.id.viewpost);
                         }
                     };
+                    if (filteredPosts == null || filteredPosts.size() == 0) {
+                        View contextView = parent.findViewById(R.id.nav_host_fragment);
+                        Snackbar.make(contextView, "No Posts qualify the filters. Please try changing the filters.", Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
+
                     m.setData(filteredPosts, clickListener);
                 } else {
                     View.OnClickListener clickListener = new View.OnClickListener() {
@@ -73,6 +79,11 @@ public class HomeFilters extends Fragment {
                             navController.navigate(R.id.viewpost);
                         }
                     };
+                    if (parent.allPostList == null || parent.allPostList.size() == 0) {
+                        View contextView = parent.findViewById(R.id.nav_host_fragment);
+                        Snackbar.make(contextView, "No Posts to display.", Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
                     m.setData(parent.allPostList, clickListener);
                 }
             }
