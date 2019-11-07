@@ -297,4 +297,12 @@ public class Database extends SQLiteOpenHelper {
         }
         return name;
     }
+
+    public Boolean isItemSold(int itemId){
+        String name = "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM PurchaseInfo where itemId = '" + itemId + "';";
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor.getCount()>0;
+    }
 }

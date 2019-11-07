@@ -109,7 +109,7 @@ public class ViewPost extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         //only owner can mark an item as sold
-        if (parent.getCurrentPost().getOwnerEmail().equals(parent.getCurrentUserEmail())) {
+        if (parent.getCurrentPost().getOwnerEmail().equals(parent.getCurrentUserEmail()) && !db.isItemSold(parent.getCurrentPost().getItemId())) {
             MenuItem menuItem = menu.findItem(R.id.sold);
             menuItem.setVisible(true);
         }

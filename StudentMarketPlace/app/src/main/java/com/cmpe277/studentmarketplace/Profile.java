@@ -73,7 +73,7 @@ public class Profile extends Fragment {
 
         final Button b = (Button) view.findViewById(R.id.btn_main);
         if(!parent.getViewProfileOf().equals(parent.currentUserEmail)){
-            b.setEnabled(false);
+            b.setVisibility(View.GONE);
         }
         b.setOnClickListener(new View.OnClickListener() {
             @Override
