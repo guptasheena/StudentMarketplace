@@ -53,8 +53,8 @@ public class AddPost extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_addpost, container, false);
-        Button buttonLoadImage = view.findViewById(R.id.buttonLoadImage);
-        Button save = view.findViewById(R.id.savepost);
+        Button buttonLoadImage = view.findViewById(R.id.loadImageButton);
+        Button save = view.findViewById(R.id.addPost);
         final Spinner category_input = view.findViewById(R.id.category);
         final EditText name_input = view.findViewById(R.id.add_name);
         final EditText desc_input = view.findViewById(R.id.add_desc);

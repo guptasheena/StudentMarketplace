@@ -2,12 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add post form"/>
+    android:layout_height="match_parent"
+    android:background="#451310"
+    >
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -17,7 +14,9 @@
         <EditText android:id="@+id/add_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email" />
+            android:hint="Item Name"
+            android:textColor="#fff"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -28,8 +27,11 @@
         <EditText android:id="@+id/add_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"/>
+            android:hint="Description"
+            android:textColor="#fff"
+            />
     </com.google.android.material.textfield.TextInputLayout>
+
     <Spinner
         android:id="@+id/category"
         android:layout_width="match_parent"
@@ -43,18 +45,18 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.731"></Spinner>
+        app:layout_constraintVertical_bias="0.731" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Upload a image"
-        android:id="@+id/buttonLoadImage"/>
+        android:text="Upload an image"
+        android:id="@+id/loadImageButton"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save Post"
-        android:id="@+id/savepost"/>
+        android:id="@+id/addPost"/>
 
     <ImageView
         android:id="@+id/targetImage"
