@@ -25,6 +25,7 @@ public class Profile extends Fragment {
 
     // vars
     boolean flag;
+    User user;
 
     Database db;
 
@@ -42,6 +43,8 @@ public class Profile extends Fragment {
         final HomeActivity parent = (HomeActivity) getActivity();
         db = new Database(parent);
 
+        user = db.GetUserDetails(parent.getViewProfileOf());
+
         email = view.findViewById(R.id.email);
         firstName = view.findViewById(R.id.firstName);
         lastName = view.findViewById(R.id.lastName);
@@ -49,13 +52,13 @@ public class Profile extends Fragment {
         address = view.findViewById(R.id.address);
         phone = view.findViewById(R.id.phone);
 
-        User u = parent.getUser();
+//        User u = parent.getUser();
 
-        firstName.setText(u.getFirst_name());
-        lastName.setText(u.getLast_name());
-        password.setText(u.getPassword());
-        address.setText(u.getAddress());
-        phone.setText(u.getPhone());
+        firstName.setText(user.getFirst_name());
+        lastName.setText(user.getLast_name());
+        password.setText(user.getPassword());
+        address.setText(user.getAddress());
+        phone.setText(user.getPhone());
 
         flag = false;
 
@@ -69,6 +72,9 @@ public class Profile extends Fragment {
 //        });
 
         final Button b = (Button) view.findViewById(R.id.btn_main);
+        if(!parent.getViewProfileOf().equals(parent.currentUserEmail)){
+            b.setEnabled(false);
+        }
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +87,7 @@ public class Profile extends Fragment {
                     b.setText("Save Changes");
                     flag = true;
                 } else {
-                    parent.updateUser(
+                    db.UpdateUser(
                             email.getText().toString(),
                             firstName.getText().toString(),
                             lastName.getText().toString(),

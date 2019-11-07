@@ -36,7 +36,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     SharedPreferences sp;
     RecyclerView homePostsRecyclerView, postedPostRecyclerView, purchasedPostRecylerView;
     ArrayList<Post> allPostList, postedPostList, purchasedPostList;
-    User user;
     Database db;
     HomeActivity currentActivity;
     Post currentPost; // accessed by ViewPost fragment
@@ -72,7 +71,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         postedPostList = db.GetPostedPosts(currentUserEmail);
         purchasedPostList = db.GetPurchasedPosts(currentUserEmail);
         currentActivity = this;
-        user = db.GetUserDetails(currentUserEmail);
     }
 
     @Override
@@ -133,12 +131,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public String getCurrentUserEmail() {
         return currentUserEmail;
-    }
-
-    public User getUser() { return user; }
-
-    public void updateUser(String email, String first_name, String last_name, String password, String address, String phone) {
-        db.UpdateUser(email, first_name, last_name, password, address, phone);
     }
 
     public void setViewProfileOf(String email) {
