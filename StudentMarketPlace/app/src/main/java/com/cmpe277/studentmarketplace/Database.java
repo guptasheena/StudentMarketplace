@@ -197,7 +197,7 @@ public class Database extends SQLiteOpenHelper {
 
     public ArrayList<Post> GetPostedPosts(String user) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM Item WHERE id NOT IN(SELECT itemId FROM PurchaseInfo) AND posted_by = \"" + user + "\"";
+        String query = "SELECT * FROM Item WHERE posted_by = \"" + user + "\"";
         Log.d(TAG, "GetPostedPosts: " + query);
         Cursor cursor = db.rawQuery(query, null);
         ArrayList<Post> postsList = new ArrayList<>();

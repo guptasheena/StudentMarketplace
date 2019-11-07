@@ -146,12 +146,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayHomePosts() {
+        allPostList = db.GetAllPosts();
         if (homePostsRecyclerView == null) return;
         RecyclerView.Adapter mAdapter;
         // specify an adapter
         if (allPostList == null || allPostList.size() == 0) {
             View contextView = this.findViewById(R.id.nav_host_fragment);
-            Snackbar.make(contextView, "No HomePosts to Display", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(contextView, "No Posts to Display", Snackbar.LENGTH_LONG).show();
             return;
         }
         View.OnClickListener clickListener = new View.OnClickListener() {
@@ -172,6 +173,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayPostedPosts() {
+        postedPostList = db.GetPostedPosts(currentUserEmail);
         if (postedPostRecyclerView == null) return;
         RecyclerView.Adapter mAdapter;
         // specify an adapter
@@ -200,6 +202,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayPurchasedPosts() {
+        purchasedPostList = db.GetPurchasedPosts(currentUserEmail);
         if (purchasedPostRecylerView == null) return;
         RecyclerView.Adapter mAdapter;
         // specify an adapter
