@@ -64,7 +64,10 @@ public class map extends Fragment implements OnMapReadyCallback {
         markerOptions.position(ownerLoc);
         markerOptions.title("Destination: "+strAddress);
         mMap.addMarker(markerOptions);
-        if(strAddress2.equals("") || strAddress2 == null){
+        if(parent.getCurrentUserEmail().equals(parent.getCurrentPost().getOwnerEmail())){
+            errMsg = "You are the owner!";
+        }
+        else if(strAddress2.equals("") || strAddress2 == null){
             errMsg = "Looks like you havent  doesn't have an address!";
         }
         else{
