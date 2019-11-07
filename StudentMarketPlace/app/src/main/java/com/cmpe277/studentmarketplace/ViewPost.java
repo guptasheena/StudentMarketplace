@@ -73,18 +73,18 @@ public class ViewPost extends Fragment {
                 String errMsg = "";
                 String strAddress = db.getUserAddress(parent.getCurrentPost().getOwnerEmail());
                 LatLng ownerLoc = null;
-                if (strAddress == "" || strAddress == null){
-                    errMsg = "Post owner doesn't have an address!";
-                }
-                else {
-                    ownerLoc = g.getLatLong(strAddress);
-                    if (ownerLoc == null) {
-                        errMsg = "Post owner could not be located!";
+                if (strAddress.equals("")|| strAddress == null){
+                        errMsg = "Post owner doesn't have an address!";
                     }
                     else {
-                        NavController navController = Navigation.findNavController(parent, R.id.nav_host_fragment);
-                        navController.navigate(R.id.direction);
-                    }
+                        ownerLoc = g.getLatLong(strAddress);
+                        if (ownerLoc == null) {
+                            errMsg = "Post owner could not be located!";
+                        }
+                        else {
+                            NavController navController = Navigation.findNavController(parent, R.id.nav_host_fragment);
+                            navController.navigate(R.id.direction);
+                        }
                 }
 
                 if(errMsg != ""){
