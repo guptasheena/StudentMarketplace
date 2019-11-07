@@ -40,6 +40,8 @@
         android:entries="@array/categories"
         android:spinnerMode="dropdown"
         android:theme="@android:style/Widget.DeviceDefault.ListView.DropDown"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.547"
         app:layout_constraintLeft_toLeftOf="parent"
