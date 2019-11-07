@@ -293,7 +293,7 @@ public class Database extends SQLiteOpenHelper {
         String query = "SELECT first_name, last_name FROM User where email = '" + email + "';";
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToNext()) {
-            name = cursor.getString(cursor.getColumnIndex("first_name"))+" ,"+cursor.getString(cursor.getColumnIndex("last_name"));
+            name = cursor.getString(cursor.getColumnIndex("first_name"))+" "+cursor.getString(cursor.getColumnIndex("last_name"));
         }
         return name;
     }
