@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +52,7 @@ public class map extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         Geocoder g = new Geocoder(parent);
         String strAddress = db.getUserAddress(parent.getCurrentPost().getOwnerEmail());
         LatLng ownerLoc= g.getLatLong(strAddress);
@@ -71,20 +73,51 @@ public class map extends Fragment implements OnMapReadyCallback {
                 errMsg = "You could not be located!Please check if your address is correct";
             }
             else {
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 markerOptions.position(currentUserLoc);
                 markerOptions.title("Source: "+strAddress2);
                 mMap.addMarker(markerOptions);
-                mMap.addPolyline(new PolylineOptions()
+               /* mMap.addPolyline(new PolylineOptions()
                         .add(ownerLoc, currentUserLoc)
                         .width(5)
-                        .color(Color.RED));
+                        .color(Color.RED));*/
+               String url = getDirectionsUrl(currentUserLoc,ownerLoc);
+               Object[] DataTransfer = new Object[2];
+               DataTransfer[0] = mMap;
+               DataTransfer[1] = url;
+               GetDirections gd = new GetDirections();
+               gd.execute(DataTransfer);
             }
         }
         mapFragment.onResume();
         if(errMsg != ""){
             Toast.makeText(parent,errMsg,Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public String getDirectionsUrl(LatLng origin, LatLng dest) {
+
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+
+        // Sensor enabled
+        String sensor = "sensor=false";
+        String mode = "mode=driving";
+
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode;
+
+        // Output format
+        String output = "json";
+
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key="+getString(R.string.goole_api_key);
+
+
+        return url;
     }
 
 }
