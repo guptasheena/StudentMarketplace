@@ -32,6 +32,19 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Price in Dollars"
+            android:textColor="#fff"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Spinner
         android:id="@+id/category"
         android:layout_width="match_parent"

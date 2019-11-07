@@ -58,6 +58,7 @@ public class AddPost extends Fragment {
         final Spinner category_input = view.findViewById(R.id.category);
         final EditText name_input = view.findViewById(R.id.add_name);
         final EditText desc_input = view.findViewById(R.id.add_desc);
+        final EditText price = view.findViewById(R.id.price);
         parent = (HomeActivity) getActivity();
         targetImage = view.findViewById(R.id.targetImage);
         db = new Database(parent);
@@ -81,7 +82,7 @@ public class AddPost extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Post post = new Post(0, name_input.getText().toString(), desc_input.getText().toString(), parent.getCurrentUserEmail(), category_input.getSelectedItem().toString(), 0.0, images);
+                Post post = new Post(0, name_input.getText().toString(), desc_input.getText().toString(), parent.getCurrentUserEmail(), category_input.getSelectedItem().toString(), Double.parseDouble(price.getText().toString()), images);
                 DbResult result = db.createNewPost(post);
                 NavigationView navView = parent.findViewById(R.id.nav_view);
                 parent.allPostList = db.GetAllPosts(); //to refresh home on adding new
